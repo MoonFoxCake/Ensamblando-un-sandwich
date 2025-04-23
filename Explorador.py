@@ -1,4 +1,5 @@
 from enum import Enum, auto
+import os
 #Para poder usar enums
 
 import re
@@ -122,8 +123,15 @@ class Explorador:
 
                             
 # Algo basico para leer el archivo
-with open("ejemplo.sdw", "r", encoding="utf-8") as archivo:
-    lineas = archivo.readlines()
+split_path = os.path.splitext('ejemplo.sdw')
+if split_path[1] != '.sdw':
+    print("Mae, esto no es un sandwich mae, vayase")
+    exit(1)
+else:
+    with open("ejemplo.sdw", "r", encoding="utf-8") as archivo:
+        lineas = archivo.readlines()
+
+
 
 # Crear el explorador y ejecutar el análisis
 explorador = Explorador(lineas)
