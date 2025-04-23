@@ -23,6 +23,8 @@ class Componente(Enum):
     PUNTUACION = auto()
     BLANCOS = auto()
     NINGUNO = auto()
+    SEPARADORES = auto()
+    SIMBOLO = auto()
 
 
 class info_lexico:
@@ -60,10 +62,11 @@ class Explorador:
                             (Componente.FLOTANTE, r'^(-?[0-9]+\.[0-9]+)'),
                             (Componente.CRUDO_VALOR_VERDAD, r'^(True|False)'),
                             (Componente.PUNTUACION, r'^([/\{}()])'),
-                            (Componente.BLANCOS, r'^(\s)+')
+                            (Componente.BLANCOS, r'^(\s)+'),
+                            (Componente.SEPARADORES, r'^(;|,|\.)'),
+                            (Componente.SIMBOLO, r'^(=|<|>|=|!=)')
                             ]
-    #Lista con todos los elementos segun la documentacion, de momento sirve, se podrian añadir otras cosas como las funciones claves pero eso es para el analizador
-    
+    #Maes, puse separadores y simbolos para que este mae no se salte cosas, si no tiene como clasificar explota, podria quedar asi o intentar meterlo como error, ahi pueden ver
     def __init__(self, contenido_archivo):
         self.texto = contenido_archivo
         self.componentes = []
