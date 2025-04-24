@@ -7,6 +7,22 @@ import re
 
 # Importar librerias basandose en el explorador de ciruelas
 
+class Despiche: #es la clase de errores btw
+    def __init__(self, nombre_Error, detalles):
+        self.nombre_Error = nombre_Error
+        self.detalles = info_lexico
+
+
+    def stringerror(self):
+        resultado = f"Error: {self.mensaje}"
+        return resultado
+
+class ComponenteMalo(Despiche):
+    def __init__(self, detalles):
+        super().__init__("Mae, metio algo que no debia de ir ahi", detalles)
+
+
+
 class Componente(Enum):
     #Se usa auto para simplicidad y no tener que asignar valores manualmente, se pueden añadir mas, solo no sabia que poner
     RESEÑA = auto()
@@ -51,7 +67,7 @@ class Explorador:
 
 
     componentes_posibles = [(Componente.RESEÑA, r'-E .*? -o'), 
-                            (Componente.PALABRA_CLAVE, r'^(michelin|servir|quemo)'),
+                            (Componente.PALABRA_CLAVE, r'^(michelin|servir|quemo|pelar)'),
                             (Componente.CONDICIONAL, r'^(if|else|elif)'),
                             (Componente.REPETICION, r'^(integrar)'),
                             (Componente.ASIGNACION, r'^(incorporar|marinar|pelar)'),
@@ -65,12 +81,14 @@ class Explorador:
                             (Componente.PUNTUACION, r'^([/\{}()])'),
                             (Componente.BLANCOS, r'^(\s)+'),
                             (Componente.SEPARADORES, r'^(;|,|\.)'),
-                            (Componente.SIMBOLO, r'^(=|<|>|=|!=)')
+                            (Componente.SIMBOLO, r'^(=|<|>|=|!=)'),
+                            
                             ]
     #Maes, puse separadores y simbolos para que este mae no se salte cosas, si no tiene como clasificar explota, podria quedar asi o intentar meterlo como error, ahi pueden ver
     def __init__(self, contenido_archivo):
         self.texto = contenido_archivo
         self.componentes = []
+        self.errores = []
         #Inicializacion, nada mas
 
     def explorar(self):
@@ -110,11 +128,21 @@ class Explorador:
                                 
                                 componentes.append(Componente_nuevo)
 
+                            
                             linea = linea[busqueda.end():]
                             break;
             else:
-                #Si no se encuentra nada se rompe el ciclo
+                #Si no se encuentra nada se rompe el ciclo, si hay algo raro lo pone, esto es un intento de manejo de errores, porfa revisenlo
+                busqueda = re.match(regex, linea)
+                Componente_nuevo = ComponenteMalo(linea)
+                componentes.append(Componente_nuevo)
                 break
+                
+                
+                                    
+
+            
+                
             #variacion del codigo de gitlab, por alguna razon si no esta esto, sigue infinitamente
 
         return componentes
