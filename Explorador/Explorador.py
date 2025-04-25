@@ -56,7 +56,7 @@ class Explorador:
                             (Componente.REPETICION, r'^(integrar)'),
                             (Componente.ASIGNACION, r'^(incorporar|marinar|pelar)'),
                             (Componente.OPERADOR, r'^(batir|colar|amasar|partir|sobras)'),
-                            (Componente.COMPARADOR, r'^(mismo_sabor_que|mas_sazonado_que|menos_cocid_que|tan_hornead_como|tan_dulce_como)'),
+                            (Componente.COMPARADOR, r'^(mismo_sabor_que|mas_sazonado_que|menos_cocido_que|tan_horneado_como|tan_dulce_como)'),
                             (Componente.TEXTO, r'^(".?[^"]*)"'),
                             (Componente.IDENTIFICADOR, r'^([a-zA-Z_]([a-zA-z0-9])*)'),
                             (Componente.FLOTANTE, r'^(-?[0-9]+\.[0-9]+)'),
