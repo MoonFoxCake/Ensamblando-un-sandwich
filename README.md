@@ -10,13 +10,15 @@ Sabemos que aprender a programar puede ser una experiencia frustrante para mucho
 
 ## 📂 Distribución de Carpetas
 
-📦 proyecto/
-├── 📂 explorador/
-│ └── 🐍 explorador.py, el explorador del programa
-├── 📂 ejemplos de Codigo/
-│ └── 📜 Aca se van a insertar ejemplos de codigo, con mas para que se pueda probar y entender
-└── 📂 documentacion y sintaxis/
-└── 📚 # Documentación del lenguaje, sintaxis de este y otros documentos
+<p>
+📦 proyecto/<br>
+├── 📂 explorador/<br>
+│ └── 🐍 explorador.py, el explorador del programa<br>
+├── 📂 ejemplos de Codigo/<br>
+│ └── 📜 Aca se van a insertar ejemplos de codigo, con mas para que se pueda probar y entender<br>
+└── 📂 documentacion y sintaxis/<br>
+└── 📚 # Documentación del lenguaje, sintaxis de este y otros documentos<br>
+</p>
 
 ## 💻 Ejemplos de Código (.sdw)
 
