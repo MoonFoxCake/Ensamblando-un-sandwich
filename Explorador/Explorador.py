@@ -26,6 +26,7 @@ class Componente(Enum):
     NINGUNO = auto()
     SEPARADORES = auto()
     SIMBOLO = auto()
+    ERROR = auto()
 
 
 class info_lexico:
@@ -88,6 +89,44 @@ class Explorador:
 
         for componente in self.componentes:
             print(componente)
+    
+    def verificar_balanceo(self):
+        pila = []
+        errores = []
+
+        pares = {
+            '(': ')',
+            '{': '}'
+        }
+
+        for comp in self.componentes:
+            if comp.tipo == Componente.PUNTUACION:
+                simbolo = comp.texto
+                linea = comp.lectura_linea
+
+                if simbolo in pares:
+                    pila.append((simbolo, linea))
+                elif simbolo in pares.values():
+                    if not pila:
+                        errores.append(f"Error: cierre inesperado '{simbolo}' en la línea {linea}")
+                    else:
+                        simbolo_abierto, linea_abierta = pila[-1]
+                        if pares[simbolo_abierto] == simbolo:
+                            pila.pop()
+                        else:
+                            errores.append(
+                                f"Error: se esperaba '{pares[simbolo_abierto]}' para cerrar '{simbolo_abierto}' "
+                                f"abierto en la línea {linea_abierta}, pero se encontró '{simbolo}' en la línea {linea}"
+                            )
+                            pila.pop()  # Sacamos el que no cierra bien, para seguir el flujo correctamente
+
+        # Al final, si hay símbolos abiertos sin cerrar
+        for simbolo_abierto, linea_abierta in pila:
+            errores.append(f"Error: no se cerró '{simbolo_abierto}' abierto en la línea {linea_abierta}")
+
+        for err in errores:
+            print(err)
+
 
     def lectura_documento(self, linea, num_linea):
         #Se encarga de leer el documento y sacar los componentes lexicos, se le pasa una linea y se le saca el componente
@@ -113,7 +152,10 @@ class Explorador:
                             linea = linea[busqueda.end():]
                             break;
             else:
-                #Si no se encuentra nada se rompe el ciclo
+                # Si no hay match, se registra un error como un componente más
+                caracter_erroneo = linea[0]
+                Componente_error = info_lexico(Componente.ERROR, caracter_erroneo, num_linea)
+                componentes.append(Componente_error)
                 break
             #variacion del codigo de gitlab, por alguna razon si no esta esto, sigue infinitamente
 
@@ -123,12 +165,12 @@ class Explorador:
 
                             
 # Algo basico para leer el archivo
-split_path = os.path.splitext('ejemplo.sdw')
+split_path = os.path.splitext('ejemplo1.sdw') 
 if split_path[1] != '.sdw':
     print("Mae, esto no es un sandwich mae, vayase")
     exit(1)
 else:
-    with open("ejemplo.sdw", "r", encoding="utf-8") as archivo:
+    with open("C:\\Users\\alegu\\OneDrive\\Documents\\Compi\\Ensamblando-un-sandwich\\Ejemplos de Codigo\\ejemplo1.sdw", "r", encoding="utf-8") as archivo:
         lineas = archivo.readlines()
 
 

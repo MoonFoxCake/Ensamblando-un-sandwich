@@ -1,0 +1,8 @@
+michelin RecetaTarta (harina, azucar) {
+    integrar (horneados < 10) {
+        servir horneados 
+        horneados = horneados batir 1
+    }
+    if harina mas_sazonado_que 200 "Demasiada harina"
+    -E Este es un comentario -o
+}
