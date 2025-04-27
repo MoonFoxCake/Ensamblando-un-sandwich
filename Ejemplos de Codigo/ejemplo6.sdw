@@ -1,0 +1,13 @@
+{
+  michelin area_circulo(float radio) {
+    incorporar float pi = 3.1416
+    incorporar float area = 0
+
+    ajustar area = pi amasar radio amasar radio
+
+    servir "El área del círculo es:"
+    servir area
+  }
+
+  -E Esta receta calcula el área de un círculo usando el radio proporcionado -o
+}

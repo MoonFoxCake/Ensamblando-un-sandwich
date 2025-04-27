@@ -1,0 +1,9 @@
+{
+	Michelin Saludar(string nombre) {
+    	Incorporar saludo = "¡Hola " batir nombre batir "!"
+    	Emplatar Servir saludo
+	}
+
+	-E Función de demostración para strings -o
+	Saludar("Master Chef")
+}
