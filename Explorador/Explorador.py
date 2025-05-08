@@ -179,3 +179,4 @@ else:
 explorador = Explorador(lineas)
 explorador.explorar()
 explorador.imprimir_componentes()
+explorador.verificar_balanceo()
