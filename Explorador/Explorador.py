@@ -170,7 +170,7 @@ if split_path[1] != '.sdw':
     print("Mae, esto no es un sandwich mae, vayase")
     exit(1)
 else:
-    with open("C:\\Users\\alegu\\OneDrive\\Documents\\Compi\\Ensamblando-un-sandwich\\Ejemplos de Codigo\\ejemplo1.sdw", "r", encoding="utf-8") as archivo:
+    with open(".\\Ejemplos de Codigo\\ejemplo1.sdw", "r", encoding="utf-8") as archivo:
         lineas = archivo.readlines()
 
 
