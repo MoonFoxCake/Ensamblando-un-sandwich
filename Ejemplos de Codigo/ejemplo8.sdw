@@ -1,0 +1,7 @@
+{
+michelin validar_edad(int edad) {
+    if edad menos cocido que 18 quemo No es mayor de edad"
+    elif edad mas sazonado que 120 quemo "Muy Improbable"
+    else servir "Edad válida, es mayor de edad"
+}
+}

@@ -1,0 +1,13 @@
+{
+michelin promedio(list numeros) {
+    incorporar int suma = 0
+    incorporar int i = 0
+    
+    integrar(i menos cocido que numeros.longitud) {
+        ajustar suma = suma batir numeros[i]
+        ajustar i = i batir 1
+    }
+    
+    servir suma colar numeros.longitud
+    -E Da el promedio dividiendo la lista, como esta basado en python deberia de funcionar? -o
+}}

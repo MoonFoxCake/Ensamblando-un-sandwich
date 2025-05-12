@@ -1,0 +1,11 @@
+{
+michelin convertir_temperatura(float valor, string direccion) {
+    if direccion mismo sabor que "CtoF" {
+        servir valor amasar 1.8 batir 32
+    }
+    elif direccion mismo sabor que "FtoC" {
+        servir (valor partir 32) amasar (5 colar 9)
+    }
+    else quemo "Dirección no válida. Use 'CtoF' o 'FtoC'"
+}
+}

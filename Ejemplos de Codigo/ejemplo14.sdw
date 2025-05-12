@@ -1,0 +1,22 @@
+{michelin calculadora(float num1, float num2, int operacion) {
+    if operacion mismo sabor que 1 {
+
+        servir num1 batir num2
+    }
+    elif operacion mismo sabor que 2 {
+
+        servir num1 partir num2
+    }
+    elif operacion mismo sabor que 3 {
+
+        if num2 mismo sabor que 0 quemo "¡Error! No se puede colar por cero"
+        servir num1 colar num2
+    }
+    elif operacion mismo sabor que 4 {
+
+        servir num1 amasar num2
+    }
+    else {
+        quemo "Operación inválida. Usa: 1(+), 2(-), 3(/), 4(×)"
+    }
+}}
