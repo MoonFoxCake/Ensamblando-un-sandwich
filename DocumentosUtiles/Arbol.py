@@ -20,6 +20,7 @@ class TipoNodo(Enum):
     CONDICIONAL = auto()
     COMPARACION = auto()
     RETORNO = auto()
+    PRINT = auto()
     ERROR = auto()
     PRINCIPAL = auto()
     BLOQUE_INSTRUCCIONES = auto()
@@ -30,6 +31,7 @@ class TipoNodo(Enum):
     ENTERO = auto()
     FLOTANTE = auto()
     IDENTIFICADOR = auto()
+    PARAMETROS = auto()
 
 class Nodo:
     def __init__(self, tipo, valor=None):

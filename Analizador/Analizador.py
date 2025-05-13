@@ -7,8 +7,8 @@ class Analizador:
     cantidad_componentes: int
     posición_componente_actual : int
     componente_actual : info_lexico
-
-    def __init__(self, lista_componentes):
+ 
+    def __init__(self, lista_componentes): #Listo
 
         self.componentes_léxicos = lista_componentes
         self.cantidad_componentes = len(lista_componentes)
@@ -16,9 +16,9 @@ class Analizador:
         self.posición_componente_actual = 0
         self.componente_actual = lista_componentes[0]
 
-        self.asa = ÁrbolSintáxisAbstracta()
+        self.asa = ArbolSintáxisAbstracta()
 
-    def imprimir_asa(self):
+    def imprimir_asa(self): #Listo
         """
         Imprime el árbol de sintáxis abstracta
         """
@@ -29,7 +29,7 @@ class Analizador:
             self.asa.imprimir_preorden()
 
 
-    def analizar(self):
+    def analizar(self): #Listo
         """
         Método principal que inicia el análisis siguiendo el esquema de
         análisis por descenso recursivo
@@ -37,58 +37,50 @@ class Analizador:
         self.asa.raiz = self.__analizar_programa()
 
 
-    def __analizar_programa(self):
+    def __analizar_programa(self): #Listo PERO FALTAN COMENTARIOS
        
 
         nodos_nuevos = []
 
-        # pueden venir múltiples asignaciones o funciones
+        # pueden venir múltiples asignaciones, funciones o prints (servir) 
         while (True):
 
             # Si es asignación
-            if self.componente_actual.tipo == Componente.IDENTIFICADOR:
+            if self.componente_actual.texto == 'incorporar':
                 nodos_nuevos = [self.__analizar_asignación()]
 
             # Si es función
-            elif (self.componente_actual.texto == 'michelin'):
+            elif (self.componente_actual.texto == 'servir'): 
+                nodos_nuevos += [self.__analizar_print()]
+
+
+            # Si es función
+            elif (self.componente_actual.texto == 'michelin'): 
                 nodos_nuevos += [self.__analizar_función()]
 
             else:
                 break
 
-        # De fijo al final una función principal
-        if (self.componente_actual.texto in ['jefe', 'jefa']):
-            nodos_nuevos += [self.__analizar_principal()]
-        else:
-            raise SyntaxError(str(self.componente_actual))
-
         
-        return NodoÁrbol(TipoNodo.PROGRAMA, nodos=nodos_nuevos)
+        return Nodo(TipoNodo.PROGRAMA, nodos=nodos_nuevos)
         
 
-    def __analizar_asignación(self):
+    def __analizar_asignación(self):  #Listo
 
         nodos_nuevos = []
 
         # El identificador en esta posición es obligatorio
         nodos_nuevos += [self.__verificar_identificador()]
 
-        # Igual el métale
-        self.__verificar('metale')
-
-
+        self.__verificar('=')
         # El siguiente bloque es de opcionales
 
 
-        if self.componente_actual.tipo in [TipoComponente.ENTERO, TipoComponente.FLOTANTE, TipoComponente.VALOR_VERDAD, TipoComponente.TEXTO] :
+        if self.componente_actual.tipo in [Componente.ENTERO, Componente.FLOTANTE, Componente.VALOR_VERDAD, Componente.TEXTO] :
             nodos_nuevos += [self.__analizar_literal()]
 
-        # los paréntesis obligatorios (es un poco feo)
-        elif self.componente_actual.texto == '(': 
-            nodos_nuevos += [self.__analizar_expresión_matemática()]
-
         # Acá tengo que decidir si es Invocación o solo un identificador
-        elif self.componente_actual.tipo == TipoComponente.IDENTIFICADOR:
+        elif self.componente_actual.tipo == Componente.IDENTIFICADOR:
 
             if self.__componente_venidero().texto == '(':
                 nodos_nuevos += [self.__analizar_invocación()]
@@ -96,50 +88,48 @@ class Analizador:
                 nodos_nuevos += [self.__verificar_identificador()]
 
         else:
-            raise SyntaxError('Viejo... acá algo reventó', self.componente_actual)
+            raise SyntaxError('Viejo... acá algo se quemó', self.componente_actual)
 
-        return NodoÁrbol(TipoNodo.ASIGNACIÓN, nodos=nodos_nuevos)
+        return Nodo(TipoNodo.ASIGNACION, nodos=nodos_nuevos)
+    
 
-
-    def __analizar_expresión_matemática(self):
+    def __analizar_expresión_matemática(self): 
         """
         ExpresiónMatemática ::= (Expresión) | Número | Identificador
         """
 
         nodos_nuevos = []
         
-        # Primera opción
-        if self.componente_actual.texto == '(':
-
-            # Los verificar no se incluyen por que son para forzar cierta
-            # forma de escribir... pero no aportan nada a la semántica
-            self.__verificar('(')
-
-            nodos_nuevos += [self.__analizar_expresión()]
-
-            self.__verificar(')')
+        
 
         # Acá yo se que estan bien formados por que eso lo hizo el
         # explorador... es nada más revisar las posiciones.
-        elif self.componente_actual.tipo == TipoComponente.ENTERO:
+        if self.componente_actual.tipo == Componente.ENTERO:
             nodos_nuevos += [self.__verificar_entero()]
 
-        elif self.componente_actual.tipo == TipoComponente.FLOTANTE:
+        elif self.componente_actual.tipo == Componente.FLOTANTE:
             nodos_nuevos += [self.__verificar_flotante()]
 
         # Este código se simplifica si invierto la opción anterior y esta
         else:
             nodos_nuevos += [self.__verificar_identificador()]
 
-        return NodoÁrbol(TipoNodo.EXPRESIÓN_MATEMÁTICA, nodos=nodos_nuevos)
+        return Nodo(TipoNodo.EXPRESION_MATEMATICA, nodos=nodos_nuevos)
 
 
-    def __analizar_expresión(self):
+
+
+
+    def __analizar_expresión(self): #Listo
         """
-        Expresión ::= ExpresiónMatemática Operador ExpresiónMatemática
+        Expresión ::= ajustar ExpresiónMatemática Operador ExpresiónMatemática
         """
 
         nodos_nuevos = []
+
+        self.__verificar('ajustar')
+
+        nodos_nuevos += [self.__analizar_expresión()]
 
         # Acá no hay nada que hacer todas son obligatorias en esas
         # posiciones
@@ -149,30 +139,31 @@ class Analizador:
 
         nodos_nuevos += [self.__analizar_expresión_matemática()]
 
-        return NodoÁrbol(TipoNodo.EXPRESIÓN , nodos=nodos_nuevos)
+        return Nodo(TipoNodo.EXPRESION , nodos=nodos_nuevos)
 
-    def __analizar_función(self):
+    def __analizar_función(self): #Listo
         """
         Función ::= (Comentario)? mae Identificador (ParámetrosFunción) BloqueInstrucciones
         """
 
         nodos_nuevos = []
-        # Comentario con doble check azul dela muerte... (ignorado)
 
         # Esta sección es obligatoria en este orden
-        self.__verificar('mae')
+        self.__verificar('michelin')
 
         nodos_nuevos += [self.__verificar_identificador()]
         self.__verificar('(')
         nodos_nuevos += [self.__analizar_parámetros_función()]
         self.__verificar(')')
-        nodos_nuevos += [self.__analizar_bloque_instrucciones()]
 
+        self.__verificar('{')
+        nodos_nuevos += [self.__analizar_bloque_instrucciones()]
+        self.__verificar('}')
         # La función lleva el nombre del identificador
-        return NodoÁrbol(TipoNodo.FUNCIÓN, \
+        return Nodo(TipoNodo.FUNCIÓN, \
                 contenido=nodos_nuevos[0].contenido, nodos=nodos_nuevos)
 
-    def __analizar_invocación(self):
+    def __analizar_invocación(self): #Listo
         """
         Invocación ::= Identificador ( ParámetrosInvocación )
         """
@@ -184,47 +175,50 @@ class Analizador:
         nodos_nuevos += [self.__analizar_parámetros_invocación()]
         self.__verificar(')')
 
-        return NodoÁrbol(TipoNodo.INVOCACIÓN , nodos=nodos_nuevos)
+        return Nodo(TipoNodo.INVOCACION , nodos=nodos_nuevos)
+    
 
-    def __analizar_parámetros_función(self):
+
+    def __analizar_parámetros_función(self): #Listo
         """
-        ParametrosFunción ::= Identificador (/ Identificador)+
+        ParametrosFunción ::= Identificador (, Identificador)+
         """
         nodos_nuevos = []
 
         # Fijo un valor tiene que haber
         nodos_nuevos += [self.__verificar_identificador()]
 
-        while( self.componente_actual.texto == '/'):
-            self.__verificar('/')
+        while( self.componente_actual.texto == ','):
+            self.__verificar(',')
             nodos_nuevos += [self.__verificar_identificador()]
 
         # Esto funciona con lógica al verrís... Si no revienta con error
         # asumimos que todo bien y seguimos.
 
-        return NodoÁrbol(TipoNodo.PARÁMETROS_FUNCIÓN , nodos=nodos_nuevos)
+        return Nodo(TipoNodo.PARA_FUNCION , nodos=nodos_nuevos)
+    
 
-    def __analizar_parámetros_invocación(self):
+    def __analizar_parámetros_invocación(self): #Listo
         """
-        ParametrosInvocación ::= Valor (/ Valor)+
+        ParametrosInvocación ::= Valor (, Valor)+
         """
         nodos_nuevos = []
 
         # Fijo un valor tiene que haber
         nodos_nuevos += [self.__analizar_valor()]
 
-        while( self.componente_actual.texto == '/'):
-            self.__verificar('/')
+        while( self.componente_actual.texto == ','):
+            self.__verificar(',')
             nodos_nuevos += [self.__analizar_valor()]
 
         # Esto funciona con lógica al verrís... Si no revienta con error
         # asumimos que todo bien y seguimos.
 
-        return NodoÁrbol(TipoNodo.PARÁMETROS_INVOCACIÓN , nodos=nodos_nuevos)
+        return Nodo(TipoNodo.PARA_INVOCACION , nodos=nodos_nuevos)
         
 
 
-    def __analizar_instrucción(self):
+    def __analizar_instrucción(self): #Listo
         """
         Instrucción ::= (Repetición | Bifurcación | Asignación | Invocación | Retorno | Error | Comentario )
 
@@ -246,21 +240,24 @@ class Analizador:
 
 
         # Acá todo con if por que son opcionales
-        if self.componente_actual.texto == 'upee':
+        if self.componente_actual.texto == 'Integrar':
             nodos_nuevos += [self.__analizar_repetición()]
 
-        elif self.componente_actual.texto == 'diay siii':
+        elif self.componente_actual.texto == 'if':
             nodos_nuevos += [self.__analizar_bifurcación()]
 
-        elif self.componente_actual.tipo == TipoComponente.IDENTIFICADOR:
+        elif self.componente_actual.tipo == Componente.IDENTIFICADOR:
 
 
-            if self.__componente_venidero().texto == 'metale':
+            if self.__componente_venidero().texto == 'Integrar':
                 nodos_nuevos += [self.__analizar_asignación()]
             else:
                 nodos_nuevos += [self.__analizar_invocación()]
 
-        elif self.componente_actual.texto == 'sarpe':
+        elif self.componente_actual.texto == 'servir':
+            nodos_nuevos += [self.__analizar_print()]
+
+        elif self.componente_actual.texto == 'return':
             nodos_nuevos += [self.__analizar_retorno()]
 
         else: # Muy apropiado el chiste de ir a revisar si tiene error al último.
@@ -269,20 +266,19 @@ class Analizador:
         # Ignorado el comentario
 
         # Acá yo debería volarme el nivel Intrucción por que no aporta nada
-        return NodoÁrbol(TipoNodo.INSTRUCCIÓN, nodos=nodos_nuevos)
+        return Nodo(TipoNodo.INSTRUCCIÓN, nodos=nodos_nuevos)
 
 
-    def __analizar_repetición(self):
+    def __analizar_repetición(self): #Listo
         """
-        Repetición ::= upee ( Condición ) BloqueInstrucciones
+        Repetición ::= Integrar ( Condición ) BloqueInstrucciones
         """
         nodos_nuevos = []
 
         # Todos presentes en ese orden... sin opciones
-        self.__verificar('upee')
-        self.__verificar('(')
+        self.__verificar('Integrar')
+        
         nodos_nuevos += [self.__analizar_condición()]
-        self.__verificar(')')
 
         # Yo acá tengo dos elecciones... creo otro nivel con Bloque de
         # instrucciones o pongo directamente las instrucciones en este
@@ -290,64 +286,81 @@ class Analizador:
         # grande el árbol
         nodos_nuevos += [self.__analizar_bloque_instrucciones()]
 
-        return NodoÁrbol(TipoNodo.REPETICIÓN, nodos=nodos_nuevos)
+        return Nodo(TipoNodo.REPETICIÓN, nodos=nodos_nuevos)
         
 
-    def __analizar_bifurcación(self):
+    def __analizar_bifurcación(self): #Listo
         """
-        Bifurcación ::= DiaySi (Sino)?
+        Bifurcación ::= if  elif (else)? | else
         """
         nodos_nuevos = []
 
         # el sino es opcional
-        nodos_nuevos += [self.__analizar_diaysi()]
+        nodos_nuevos += [self.__analizar_if()]
 
-        if self.componente_actual.texto == 'sino ni modo':
-            nodos_nuevos += [self.__analizar_sino()]
-
+        if self.componente_actual.texto == 'else':
+            nodos_nuevos += [self.__analizar_else()]
+        elif self.componente_actual.texto == 'elif':
+            nodos_nuevos += [self.__analizar_elif()]
         # y sino era solo el 'diay siii'
-        return NodoÁrbol(TipoNodo.BIFURCACIÓN, nodos=nodos_nuevos)
+        return Nodo(TipoNodo.BIFURCACIÓN, nodos=nodos_nuevos)
 
-    def __analizar_diaysi(self):
+    def __analizar_if(self): #Listo
         """
-        DiaySi ::= diay siii ( Condición ) BloqueInstrucciones
+        if ::= if ( Condición ) BloqueInstrucciones
         """
         nodos_nuevos = []
 
         # Todos presentes en ese orden... sin opciones
-        self.__verificar('diay siii')
-        self.__verificar('(')
+        self.__verificar('if')
         nodos_nuevos += [self.__analizar_condición()]
-        self.__verificar(')')
+        
 
         nodos_nuevos += [self.__analizar_bloque_instrucciones()]
 
-        return NodoÁrbol(TipoNodo.DIAYSI, nodos=nodos_nuevos)
+        return Nodo(TipoNodo.IF, nodos=nodos_nuevos)
 
-    def __analizar_sino(self):
+    def __analizar_else(self): #Listo
         """
-        Sino ::= sino ni modo BloqueInstrucciones
+        Else ::= else BloqueInstrucciones
         """
 
         nodos_nuevos = []
 
         # Todos presentes en ese orden... sin opciones
-        self.__verificar('sino ni modo')
+        self.__verificar('else')
         nodos_nuevos += [self.__analizar_bloque_instrucciones()]
 
-        return NodoÁrbol(TipoNodo.SINO, nodos=nodos_nuevos)
+        return Nodo(TipoNodo.ELSE, nodos=nodos_nuevos)
 
+    def __analizar_elif(self): #Listo
+        """
+        Elif ::= elif BloqueInstrucciones
+        """
+
+        nodos_nuevos = []
+
+        # Todos presentes en ese orden... sin opciones
+        self.__verificar('elif')
+        nodos_nuevos += [self.__analizar_bloque_instrucciones()]
+
+        return Nodo(TipoNodo.ELIF, nodos=nodos_nuevos)
+
+
+
+
+    """   
     def __analizar_condición(self):
-        """
-        Condición ::= Comparación ((divorcio|casorio) Comparación)?
-        """
+            
+        # Condición ::= Comparación ((divorcio|casorio) Comparación)?
+            
         nodos_nuevos = []
 
         # La primera sección obligatoria la comparación
         nodos_nuevos += [self.__analizar_comparación()]
 
         # Esta parte es opcional
-        if self.componente_actual.tipo == TipoComponente.PALABRA_CLAVE:
+        if self.componente_actual.tipo == Componente.PALABRA_CLAVE:
 
             # Acá estoy en problemas por que esto debió ser un nuevo nivel
             # en el árbol algo ási cómo OperadorLógico...  voy a hacer una
@@ -355,13 +368,13 @@ class Analizador:
 
             # opcional el AND o el OR
             if componente_actual.texto == 'divorcio':
-                nodo = NodoÁrbol(TipoNodo.OPERADOR_LÓGICO, contenido='divorcio')
+                nodo(TipoNodo.OPERADOR_LÓGICO, contenido='divorcio')
                 nodos_nuevos += [nodo]
                 self.__verificar('divorcio')
 
 
             else: # Aquí hay potencial horrible para fallo
-                nodo = NodoÁrbol(TipoNodo.OPERADOR_LÓGICO, contenido='casorio')
+                nodo = Nodo(TipoNodo.OPERADOR_LÓGICO, contenido='casorio')
                 nodos_nuevos += [nodo]
 
                 self.__verificar('casorio')
@@ -370,10 +383,26 @@ class Analizador:
             nodos_nuevos += [self.__analizar_comparación()]
 
         # Si no ha reventado vamos bien
-        return NodoÁrbol(TipoNodo.CONDICIÓN, nodos=nodos_nuevos)
+        return Nodo(TipoNodo.CONDICIÓN, nodos=nodos_nuevos)
+    """   
 
 
-    def __analizar_comparación(self):
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    def __analizar_comparación(self): #Listo
         """
         Comparación ::= Valor Comparador Valor
         """
@@ -384,9 +413,9 @@ class Analizador:
         nodos_nuevos += [self.__verificar_comparador()]
         nodos_nuevos += [self.__analizar_valor()]
 
-        return NodoÁrbol(TipoNodo.COMPARACIÓN, nodos=nodos_nuevos)
-
-    def __analizar_valor(self):
+        return Nodo(TipoNodo.COMPARACIÓN, nodos=nodos_nuevos)
+ 
+    def __analizar_valor(self): #Listo
         """
         Valor ::= (Identificador | Literal)
         """
@@ -394,46 +423,72 @@ class Analizador:
         # niveles del árbol
 
         # El uno o el otro
-        if self.componente_actual.tipo is TipoComponente.IDENTIFICADOR:
+        if self.componente_actual.tipo is Componente.IDENTIFICADOR:
             nodo = self.__verificar_identificador()
         else:
             nodo = self.__analizar_literal()
 
         return nodo
+    
 
-    def __analizar_retorno(self):
+    def __analizar_print(self): #Listo
         """
-        Retorno :: sarpe (Valor)?
+        Imprimir :: servir (Valor)?
         """
         nodos_nuevos = []
 
-        self.__verificar('sarpe')
+        self.__verificar('servir')
 
         # Este hay que validarlo para evitar el error en caso de que no
         # aparezca
-        if self.componente_actual.tipo in [TipoComponente.IDENTIFICADOR, TipoComponente.ENTERO, TipoComponente.FLOTANTE, TipoComponente.VALOR_VERDAD, TipoComponente.TEXTO] :
+        if self.componente_actual.tipo in [Componente.IDENTIFICADOR, Componente.ENTERO, Componente.FLOTANTE, Componente.VALOR_VERDAD, Componente.TEXTO] :
             nodos_nuevos += [self.__analizar_valor()]
 
         # Sino todo bien...
-        return NodoÁrbol(TipoNodo.RETORNO, nodos=nodos_nuevos)
+        return Nodo(TipoNodo.PRINT, nodos=nodos_nuevos)
 
-    def __analizar_error(self):
+    def __analizar_retorno(self): #Listo
         """
-        Error ::= safis Valor
+        Retorno :: return (Valor)?
         """
+        nodos_nuevos = []
+
+        self.__verificar('return')
+
+        # Este hay que validarlo para evitar el error en caso de que no
+        # aparezca
+        if self.componente_actual.tipo in [Componente.IDENTIFICADOR, Componente.ENTERO, Componente.FLOTANTE, Componente.VALOR_VERDAD, Componente.TEXTO] :
+            nodos_nuevos += [self.__analizar_valor()]
+
+        # Sino todo bien...
+        return Nodo(TipoNodo.RETORNO, nodos=nodos_nuevos)
+
+    def __analizar_error(self): #Listo
+        
+        #Error ::= Error Valor
+        
         nodos_nuevos = []        
 
         # Sin opciones
-        self.__verificar('safis')
-        nodos_nuevos += [self.__analizar_valor()]
+        self.__verificar_tipo_componente(Componente.Error)
+        nodo = Nodo(TipoNodo.ERROR, contenido =self.componente_actual.texto)
+        self.__pasar_siguiente_componente()
+        return nodo
+    
 
-        return NodoÁrbol(TipoNodo.ERROR, nodos=nodos_nuevos)
 
+
+
+
+
+
+
+
+    """
     def __analizar_principal(self):
-        """
-        Esta versión esta chocha por que no cumple con ser una gramática LL
-        Principal ::= (Comentario)?  mae (jefe | jefa) BloqueInstrucciones
-        """
+        
+        # Esta versión esta chocha por que no cumple con ser una gramática LL  Principal ::= (Comentario)?  mae (jefe | jefa) BloqueInstrucciones
+        
         nodos_nuevos = []
         # Ya en este punto estoy harto de poner comentarios
 
@@ -446,19 +501,28 @@ class Analizador:
 
         nodos_nuevos += [self.__analizar_bloque_instrucciones()]
 
-        return NodoÁrbol(TipoNodo.PRINCIPAL, nodos=nodos_nuevos)
+        return Nodo(TipoNodo.PRINCIPAL, nodos=nodos_nuevos)
+    """
 
 
-    def __analizar_literal(self):
+
+
+
+
+
+
+
+
+    def __analizar_literal(self): #Listo
         """
         Literal ::= (Número | Texto | ValorVerdad)
         """
 
         # Acá le voy a dar vuelta por que me da pereza tanta validación
-        if self.componente_actual.tipo is TipoComponente.TEXTO:
+        if self.componente_actual.tipo is Componente.TEXTO:
             nodo = self.__verificar_texto()
 
-        elif  self.componente_actual.tipo is TipoComponente.VALOR_VERDAD:
+        elif  self.componente_actual.tipo is Componente.VALOR_VERDAD:
             nodo = self.__verificar_valor_verdad()
 
         else:
@@ -466,16 +530,24 @@ class Analizador:
 
         return nodo
 
-    def __analizar_número(self):
+    def __analizar_número(self): #Listo
         """
         Número ::= (Entero | Flotante)
         """
-        if self.componente_actual.tipo == TipoComponente.ENTERO:
+        if self.componente_actual.tipo == Componente.ENTERO:
             nodo = self.__verificar_entero()
         else:
             nodo = self.__verificar_flotante()
 
         return nodo
+    
+
+
+
+
+    # NO ENTENDIIIII ESSTO, PORFA REVISAR
+
+
 
     def __analizar_bloque_instrucciones(self):
         """
@@ -493,102 +565,113 @@ class Analizador:
         nodos_nuevos += [self.__analizar_instrucción()]
 
         # Acá todo puede venir uno o más 
-        while self.componente_actual.texto in ['upee', 'diay siii', 'sarpe', 'safis'] \
-                or self.componente_actual.tipo == TipoComponente.IDENTIFICADOR:
+        while self.componente_actual.texto in ['integrar', 'if', 'return', 'Error'] \
+                or self.componente_actual.tipo == Componente.IDENTIFICADOR:
         
             nodos_nuevos += [self.__analizar_instrucción()]
 
         # Obligatorio
         self.__verificar('}')
 
-        return NodoÁrbol(TipoNodo.BLOQUE_INSTRUCCIONES, nodos=nodos_nuevos)
+        return Nodo(TipoNodo.BLOQUE_INSTRUCCIONES, nodos=nodos_nuevos)
 
-# Todos estos verificar se pueden unificar =*=
-    def __verificar_operador(self):
-        """
-        Operador ::= (echele | quitele | chuncherequee | desmadeje)
-        """
-        self.__verificar_tipo_componente(TipoComponente.OPERADOR)
 
-        nodo = NodoÁrbol(TipoNodo.OPERADOR, contenido =self.componente_actual.texto)
+
+
+
+
+
+
+
+
+
+
+
+    def __verificar_operador(self): #Listo
+        """
+        Operador ::= (batir|colar|amasar|partir|sobras)
+        """
+        self.__verificar_tipo_componente(Componente.OPERADOR)
+
+        nodo = Nodo(TipoNodo.OPERADOR, contenido =self.componente_actual.texto)
         self.__pasar_siguiente_componente()
 
         return nodo
 
-    def __verificar_valor_verdad(self):
+    def __verificar_valor_verdad(self):#Listo
         """
-        ValorVerdad ::= (True | False)
+        CRUDO_VALOR_VERDAD ::= (True | False)
         """
-        self.__verificar_tipo_componente(TipoComponente.VALOR_VERDAD)
+        self.__verificar_tipo_componente(Componente.CRUDO_VALOR_VERDAD)
 
-        nodo = NodoÁrbol(TipoNodo.VALOR_VERDAD, contenido =self.componente_actual.texto)
+        nodo = Nodo(TipoNodo.VALOR_VERDAD, contenido =self.componente_actual.texto)
         self.__pasar_siguiente_componente()
         return nodo
 
-    def __verificar_comparador(self):
+    def __verificar_comparador(self):#Listo
         """
-        Comparador ::= (cañazo | poquitico | misma vara | otra vara | menos o igualitico | más o igualitico)
+        Comparador ::= mismo_sabor_que|mas_sazonado_que|menos_cocido_que|tan_horneado_como|tan_dulce_como
         """
-        self.__verificar_tipo_componente(TipoComponente.COMPARADOR)
+        self.__verificar_tipo_componente(Componente.COMPARADOR)
 
-        nodo = NodoÁrbol(TipoNodo.COMPARADOR, contenido =self.componente_actual.texto)
+        nodo = Nodo(TipoNodo.COMPARADOR, contenido =self.componente_actual.texto)
         self.__pasar_siguiente_componente()
         return nodo
 
-    def __verificar_texto(self):
+    def __verificar_texto(self): #Listo
         """
         Verifica si el tipo del componente léxico actuales de tipo TEXTO
 
         Texto ::= ~/\w(\s\w)*)?~
         """
-        self.__verificar_tipo_componente(TipoComponente.TEXTO)
+        self.__verificar_tipo_componente(Componente.TEXTO)
 
-        nodo = NodoÁrbol(TipoNodo.TEXTO, contenido =self.componente_actual.texto)
+        nodo = Nodo(TipoNodo.TEXTO, contenido =self.componente_actual.texto)
         self.__pasar_siguiente_componente()
         return nodo
 
 
-    def __verificar_entero(self):
+    def __verificar_entero(self): #Listo
         """
         Verifica si el tipo del componente léxico actuales de tipo ENTERO
 
-        Entero ::= (-)?\d+
+        Entero ::= -?[0-9]+
         """
-        self.__verificar_tipo_componente(TipoComponente.ENTERO)
+        self.__verificar_tipo_componente(Componente.ENTERO)
 
-        nodo = NodoÁrbol(TipoNodo.ENTERO, contenido =self.componente_actual.texto)
+        nodo = Nodo(TipoNodo.ENTERO, contenido =self.componente_actual.texto)
         self.__pasar_siguiente_componente()
         return nodo
 
 
-    def __verificar_flotante(self):
+    def __verificar_flotante(self): #Listo
         """
         Verifica si el tipo del componente léxico actuales de tipo FLOTANTE
 
-        Flotante ::= (-)?\d+.(-)?\d+
+        Flotante ::= -?[0-9]+\.[0-9]+
         """
-        self.__verificar_tipo_componente(TipoComponente.FLOTANTE)
+        self.__verificar_tipo_componente(Componente.FLOTANTE)
 
-        nodo = NodoÁrbol(TipoNodo.FLOTANTE, contenido =self.componente_actual.texto)
+        nodo = Nodo(TipoNodo.FLOTANTE, contenido =self.componente_actual.texto)
         self.__pasar_siguiente_componente()
         return nodo
 
 
-    def __verificar_identificador(self):
+    def __verificar_identificador(self): #Listo
         """
         Verifica si el tipo del componente léxico actuales de tipo
         IDENTIFICADOR
 
-        Identificador ::= [a-z][a-zA-Z0-9]+
+        Identificador ::= [a-zA-Z_]([a-zA-z0-9])*
         """
-        self.__verificar_tipo_componente(TipoComponente.IDENTIFICADOR)
+        self.__verificar_tipo_componente(Componente.IDENTIFICADOR)
 
-        nodo = NodoÁrbol(TipoNodo.IDENTIFICADOR, contenido =self.componente_actual.texto)
+        nodo = Nodo(TipoNodo.IDENTIFICADOR, contenido =self.componente_actual.texto)
         self.__pasar_siguiente_componente()
         return nodo
 
 
-    def __verificar(self, texto_esperado ):
+    def __verificar(self, texto_esperado ): #Listo
 
         """
         Verifica si el texto del componente léxico actual corresponde con
@@ -602,7 +685,7 @@ class Analizador:
         self.__pasar_siguiente_componente()
 
 
-    def __verificar_tipo_componente(self, tipo_esperado ):
+    def __verificar_tipo_componente(self, tipo_esperado ): #Listo
         """
         Verifica un componente por tipo... no hace mucho pero es para
         centralizar el manejo de errores
@@ -611,6 +694,16 @@ class Analizador:
         if self.componente_actual.tipo is not tipo_esperado:
             print()
             raise SyntaxError ((tipo_esperado, str(self.componente_actual)))
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -629,10 +722,13 @@ class Analizador:
                 self.componentes_léxicos[self.posición_componente_actual]
 
 
-    def __componente_venidero(self, avance=1):
+    def __componente_venidero(self, avance=1): #Listo
         """
-        Retorna el componente léxico que está 'avance' posiciones más
-        adelante... por default el siguiente. Esto sin adelantar el
+        Retorna el componente léxico que está 'avance' posiciones más adelante... por default el siguiente. Esto sin adelantar el
         contador del componente actual.
         """
         return self.componentes_léxicos[self.posición_componente_actual+avance]
+
+
+
+

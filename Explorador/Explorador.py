@@ -56,7 +56,7 @@ class Explorador:
 
 
     componentes_posibles = [(Componente.RESEÑA, r'-E .*? -o'), 
-                            (Componente.PALABRA_CLAVE, r'^(michelin|servir|quemo)'),
+                            (Componente.PALABRA_CLAVE, r'^(michelin|servir|quemo|incorporar|ajustar)'),
                             (Componente.CONDICIONAL, r'^(if|else|elif)'),
                             (Componente.REPETICION, r'^(integrar)'),
                             (Componente.ASIGNACION, r'^(incorporar|marinar|pelar)'),
