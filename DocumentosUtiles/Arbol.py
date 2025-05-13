@@ -13,9 +13,9 @@ class TipoNodo(Enum):
     INSTRUCCION = auto()
     REPETICION = auto()
     BIFURCACION = auto()
-    "if" = auto()
-    "else" = auto()
-    "elif" = auto()
+    IF = auto()
+    ELSE = auto()
+    ELIF = auto()
     OPERADOR_LOGICO = auto()
     CONDICIONAL = auto()
     COMPARACION = auto()
@@ -32,36 +32,30 @@ class TipoNodo(Enum):
     IDENTIFICADOR = auto()
 
 class NodoArbol:
-
-    tipo: TipoNodo
-    contenido: str
-    atributos: dict
-
-    def __init__(self, tipo, contenido = None, nodos = [], atributos = {}):
+    def __init__(self, tipo, contenido=None, nodos=None, atributos=None):
         self.tipo = tipo
         self.contenido = contenido
-        self.nodos = nodos
-        self.atributos = copy.deepcopy(atributos)
+        self.nodos = nodos if nodos is not None else []
+        self.atributos = copy.deepcopy(atributos) if atributos is not None else {}
+
     def visitar(self, visitante):
         return visitante.visitar(self)
-    
-    def str_(self):
 
+    def __str__(self):
         resultado = '{:30}\t'.format(self.tipo)
 
         if self.contenido is not None:
             resultado += '{:10}\t'.format(self.contenido)
         else:
             resultado += '{:10}\t'.format('')
-        
-        if self.atributos != {}:
-            resutlado += '{:38}'.format(str(self.atributos))
+
+        if self.atributos:
+            resultado += '{:38}'.format(str(self.atributos))
         else:
             resultado += '{:38}\t'.format('')
-        
-        if self.nodos != []:
-            resultado += '<'
 
+        if self.nodos:
+            resultado += '<'
             for nodo in self.nodos[:-1]:
                 if nodo is not None:
                     resultado += '{},'.format(nodo.tipo)
@@ -70,16 +64,15 @@ class NodoArbol:
         return resultado
 
 class ArbolSintaxisAbstracta:
-    raiz: NodoArbol
+    def __init__(self, raiz=None):
+        self.raiz = raiz
 
     def imprimir_preorden(self):
         self.__preorden(self.raiz)
 
-    
     def __preorden(self, nodo):
-
+        if nodo is None:
+            return
         print(nodo)
-
-        if nodo is not None: 
-            for nodo in nodo.nodos:
-                self.__preorden(nodo)
+        for hijo in nodo.nodos:
+            self.__preorden(hijo)

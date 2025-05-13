@@ -1,5 +1,5 @@
-from Explorador import Componente, info_lexico
-from DocumentosUtiles.Arbol import ArbolSintaxisAbstracta, Nodo, TipoNodo
+from Explorador.Explorador import Componente, info_lexico
+from DocumentosUtiles.Arbol import ArbolSintaxisAbstracta, NodoArbol, TipoNodo
 
 class Analizador:
 
@@ -44,7 +44,7 @@ class Analizador:
 
         
         
-        return Nodo(TipoNodo.PROGRAMA, nodos = Nodos_Nuevos)
+        return NodoArbol(TipoNodo.PROGRAMA, nodos = Nodos_Nuevos)
     
     def __analizar_incorporacion(self):
         pass

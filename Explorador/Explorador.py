@@ -44,8 +44,13 @@ class info_lexico:
     def __str__(self):
         #formateamos los componentes lexicos para que se vea bonito el error "b o n i t o", porque nunca es bonito ver un error
 
-        resultado = f"{self.tipo:10} | {self.texto:10} | {self.lectura_linea:10}"
+        resultado = [f"{self.tipo:10}" , f"{self.texto:10}" ,f"{self.lectura_linea:10}"]
         return resultado
+    
+    def to_lista(self):
+        return [self.tipo.name, self.texto, self.lectura_linea]
+
+
     
 class Explorador:
     #Se encarga de encontrar los componentes lexicos, usualmente es el tipo de componente y un string que describe los textos
@@ -163,20 +168,3 @@ class Explorador:
         #Se retorna el array de componentes lexicos que se encontraron en la linea, si no se encuentra nada se regresa un array vacio
         #Variacion de gitlab, si esta dentro del for, ignora todos los espacios por alguna razon
 
-                            
-# Algo basico para leer el archivo
-split_path = os.path.splitext('ejemplo1.sdw') 
-if split_path[1] != '.sdw':
-    print("Mae, esto no es un sandwich mae, vayase")
-    exit(1)
-else:
-    with open(".\\Ejemplos de Codigo\\ejemplo1.sdw", "r", encoding="utf-8") as archivo:
-        lineas = archivo.readlines()
-
-
-
-# Crear el explorador y ejecutar el análisis
-explorador = Explorador(lineas)
-explorador.explorar()
-explorador.imprimir_componentes()
-explorador.verificar_balanceo()
