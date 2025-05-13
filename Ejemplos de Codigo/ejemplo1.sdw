@@ -1,4 +1,3 @@
-{
 michelin RecetaTarta (harina, azucar) {
     integrar (horneados < 10) {
         servir horneados 
@@ -6,4 +5,4 @@ michelin RecetaTarta (harina, azucar) {
     }
     if harina mas_sazonado_que 200 "Demasiada harina"
     -E Este es un comentario -o
-}}
+}

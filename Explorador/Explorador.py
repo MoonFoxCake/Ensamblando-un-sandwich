@@ -48,8 +48,7 @@ class info_lexico:
         return resultado
     
     def to_lista(self):
-        return [self.tipo.name, self.texto, self.lectura_linea]
-
+        return [self.tipo, self.texto, self.lectura_linea]
 
     
 class Explorador:

@@ -1,6 +1,6 @@
 import os
 from Explorador.Explorador import Explorador
-from Analizador.Analizador import Analizador
+
 
 # Ruta de la carpeta con los archivos de ejemplo
 directorio_ejemplos = 'Ejemplos de Codigo'
@@ -19,11 +19,17 @@ for archivo_nombre in archivos_ejemplos:
     # Crear el explorador con el contenido
     explorador = Explorador(contenido)
     explorador.explorar()  # Explorar para generar los componentes léxicos
-    
     componentes = explorador.componentes  # Obtener los componentes generados
+    for componente in componentes:
+        print(componente.tipo, componente.texto)  # Imprimir los componentes generados
 
-    # Generar la lista lista_lexica con los datos crudos
-    lista_lexica = [comp.to_lista() for comp in componentes]
+    
 
-    # Ahora ya podés pasar esto directamente al analizador:
-    print(lista_lexica)
+    """ # Crear el analizador
+    analizador = Analizador(lista_lexica)
+    
+    # Analizar el contenido y crear el árbol
+    arbol = analizador.analizar()
+    
+    # Imprimir el árbol resultante
+    print(arbol)"""

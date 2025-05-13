@@ -1,9 +1,9 @@
-{
-    michelin tabla_multiplicar(int n) {
+
+michelin tabla_multiplicar(int n) {
     incorporar int i = 1
     integrar(i menos cocido que 11) {
         incorporar int resultado = n amasar i
         servir n batir " × " batir i batir " = " batir resultado
         ajustar i = i batir 1
     }
-}}
+}

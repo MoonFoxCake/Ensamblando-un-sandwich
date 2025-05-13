@@ -31,37 +31,22 @@ class TipoNodo(Enum):
     FLOTANTE = auto()
     IDENTIFICADOR = auto()
 
-class NodoArbol:
-    def __init__(self, tipo, contenido=None, nodos=None, atributos=None):
-        self.tipo = tipo
-        self.contenido = contenido
-        self.nodos = nodos if nodos is not None else []
-        self.atributos = copy.deepcopy(atributos) if atributos is not None else {}
+class Nodo:
+    def __init__(self, tipo, valor=None):
+        self.tipo = tipo  # Tipo del componente (por ejemplo, 'PALABRA_CLAVE', 'CONDICIONAL', etc.)
+        self.valor = valor  # El valor asociado (por ejemplo, "michelin", "if", etc.)
+        self.hijos = []  # Lista de hijos en el árbol (si es que tiene)
+    
+    def agregar_hijo(self, hijo):
+        self.hijos.append(hijo)
 
-    def visitar(self, visitante):
-        return visitante.visitar(self)
-
-    def __str__(self):
-        resultado = '{:30}\t'.format(self.tipo)
-
-        if self.contenido is not None:
-            resultado += '{:10}\t'.format(self.contenido)
-        else:
-            resultado += '{:10}\t'.format('')
-
-        if self.atributos:
-            resultado += '{:38}'.format(str(self.atributos))
-        else:
-            resultado += '{:38}\t'.format('')
-
-        if self.nodos:
-            resultado += '<'
-            for nodo in self.nodos[:-1]:
-                if nodo is not None:
-                    resultado += '{},'.format(nodo.tipo)
-            resultado += '{}'.format(self.nodos[-1].tipo)
-            resultado += '>'
+    def __str__(self, nivel=0):
+        # Esto se usará para imprimir el árbol de manera legible
+        resultado = "  " * nivel + f"{self.tipo}: {self.valor}\n"
+        for hijo in self.hijos:
+            resultado += hijo.__str__(nivel + 1)
         return resultado
+
 
 class ArbolSintaxisAbstracta:
     def __init__(self, raiz=None):
