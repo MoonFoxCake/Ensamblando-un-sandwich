@@ -55,14 +55,14 @@ class Explorador:
     #Se encarga de encontrar los componentes lexicos, usualmente es el tipo de componente y un string que describe los textos
 
 
-    componentes_posibles = [(Componente.RESEÑA, r'-E .*? -o'), 
+    componentes_posibles = [(Componente.RESEÑA, r'-E .*? -o'), # Arreglar
                             (Componente.PALABRA_CLAVE, r'^(michelin|servir|quemo|incorporar|ajustar)'),
                             (Componente.CONDICIONAL, r'^(if|else|elif)'),
                             (Componente.REPETICION, r'^(integrar)'),
                             (Componente.ASIGNACION, r'^(incorporar|marinar|pelar)'),
                             (Componente.OPERADOR, r'^(batir|colar|amasar|partir|sobras)'),
                             (Componente.COMPARADOR, r'^(mismo_sabor_que|mas_sazonado_que|menos_cocido_que|tan_horneado_como|tan_dulce_como)'),
-                            (Componente.TEXTO, r'^(".?[^"]*)"'),
+                            (Componente.TEXTO, r'^(".?[^"]*)"'), 
                             (Componente.IDENTIFICADOR, r'^([a-zA-Z_]([a-zA-z0-9])*)'),
                             (Componente.FLOTANTE, r'^(-?[0-9]+\.[0-9]+)'),
                             (Componente.ENTERO, r'^(-?[0-9]+)'),

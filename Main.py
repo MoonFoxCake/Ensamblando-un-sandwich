@@ -26,7 +26,7 @@ for archivo_nombre in archivos_ejemplos:
     
 
     """ # Crear el analizador
-    analizador = Analizador(lista_lexica)
+    analizador = Analizador(componentes)
     
     # Analizar el contenido y crear el árbol
     arbol = analizador.analizar()

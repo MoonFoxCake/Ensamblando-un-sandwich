@@ -218,7 +218,7 @@ class Analizador:
         
 
 
-    def __analizar_instrucción(self): #Listo
+    def __analizar_instrucción(self): 
         """
         Instrucción ::= (Repetición | Bifurcación | Asignación | Invocación | Retorno | Error | Comentario )
 
@@ -269,7 +269,7 @@ class Analizador:
         return Nodo(TipoNodo.INSTRUCCIÓN, nodos=nodos_nuevos)
 
 
-    def __analizar_repetición(self): #Listo
+    def __analizar_repetición(self): 
         """
         Repetición ::= Integrar ( Condición ) BloqueInstrucciones
         """
@@ -441,7 +441,7 @@ class Analizador:
 
         # Este hay que validarlo para evitar el error en caso de que no
         # aparezca
-        if self.componente_actual.tipo in [Componente.IDENTIFICADOR, Componente.ENTERO, Componente.FLOTANTE, Componente.VALOR_VERDAD, Componente.TEXTO] :
+        if self.componente_actual.tipo in [Componente.IDENTIFICADOR, Componente.ENTERO, Componente.FLOTANTE, Componente.CRUDO_VALOR_VERDAD, Componente.TEXTO] :
             nodos_nuevos += [self.__analizar_valor()]
 
         # Sino todo bien...
