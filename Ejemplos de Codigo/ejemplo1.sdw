@@ -1,4 +1,4 @@
-michelin RecetaTarta (harina, azucar) {
+michelin recetatarta (harina, azucar) {
     integrar (horneados < 10) {
         servir horneados 
         horneados = horneados batir 1

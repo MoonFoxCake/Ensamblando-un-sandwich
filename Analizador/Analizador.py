@@ -1,11 +1,10 @@
 from Explorador.Explorador import Componente, info_lexico
-from DocumentosUtiles.Arbol import ArbolSintáxisAbstracta, Nodo, TipoNodo
+from DocumentosUtiles.Arbol import ArbolSintaxisAbstracta, Nodo, TipoNodo
 
 class Analizador:
 
     componentes_léxicos : list
     cantidad_componentes: int
-    posición_componente_actual : int
     componente_actual : info_lexico
  
     def __init__(self, lista_componentes): #Listo
@@ -16,7 +15,7 @@ class Analizador:
         self.posición_componente_actual = 0
         self.componente_actual = lista_componentes[0]
 
-        self.asa = ArbolSintáxisAbstracta()
+        self.asa = ArbolSintaxisAbstracta()
 
     def imprimir_asa(self): #Listo
         """
@@ -76,13 +75,13 @@ class Analizador:
         # El siguiente bloque es de opcionales
 
 
-        if self.componente_actual.tipo in [Componente.ENTERO, Componente.FLOTANTE, Componente.VALOR_VERDAD, Componente.TEXTO] :
+        if self.componente_actual.tipo in [Componente.ENTERO, Componente.FLOTANTE, Componente.CRUDO_VALOR_VERDAD, Componente.TEXTO] :
             nodos_nuevos += [self.__analizar_literal()]
 
         # Acá tengo que decidir si es Invocación o solo un identificador
         elif self.componente_actual.tipo == Componente.IDENTIFICADOR:
 
-            if self.__componente_venidero().texto == '(':
+            if self.__componente_venidero().texto == '(': #Revisar con nuestra grámatica el .texto
                 nodos_nuevos += [self.__analizar_invocación()]
             else:
                 nodos_nuevos += [self.__verificar_identificador()]
@@ -93,7 +92,7 @@ class Analizador:
         return Nodo(TipoNodo.ASIGNACION, nodos=nodos_nuevos)
     
 
-    def __analizar_expresión_matemática(self): 
+    def __analizar_expresión_matemática(self): #Listo
         """
         ExpresiónMatemática ::= (Expresión) | Número | Identificador
         """
@@ -160,8 +159,8 @@ class Analizador:
         nodos_nuevos += [self.__analizar_bloque_instrucciones()]
         self.__verificar('}')
         # La función lleva el nombre del identificador
-        return Nodo(TipoNodo.FUNCIÓN, \
-                contenido=nodos_nuevos[0].contenido, nodos=nodos_nuevos)
+        return Nodo(TipoNodo.FUNCION, \
+                contenido=nodos_nuevos[0].contenido, nodos=nodos_nuevos) #revisar .contenido como se maneja en arbol
 
     def __analizar_invocación(self): #Listo
         """
@@ -218,7 +217,7 @@ class Analizador:
         
 
 
-    def __analizar_instrucción(self): 
+    def __analizar_instrucción(self): #Listo
         """
         Instrucción ::= (Repetición | Bifurcación | Asignación | Invocación | Retorno | Error | Comentario )
 
@@ -240,7 +239,7 @@ class Analizador:
 
 
         # Acá todo con if por que son opcionales
-        if self.componente_actual.texto == 'Integrar':
+        if self.componente_actual.texto == 'integrar':
             nodos_nuevos += [self.__analizar_repetición()]
 
         elif self.componente_actual.texto == 'if':
@@ -249,15 +248,15 @@ class Analizador:
         elif self.componente_actual.tipo == Componente.IDENTIFICADOR:
 
 
-            if self.__componente_venidero().texto == 'Integrar':
+            if self.__componente_venidero().texto == "integrar": #Revisar con nuestra grámatica
                 nodos_nuevos += [self.__analizar_asignación()]
             else:
                 nodos_nuevos += [self.__analizar_invocación()]
 
-        elif self.componente_actual.texto == 'servir':
+        elif self.componente_actual.texto == 'servir': #Revisar con nuestra grámatica
             nodos_nuevos += [self.__analizar_print()]
 
-        elif self.componente_actual.texto == 'return':
+        elif self.componente_actual.texto == 'return': #Revisar con nuestra grámatica
             nodos_nuevos += [self.__analizar_retorno()]
 
         else: # Muy apropiado el chiste de ir a revisar si tiene error al último.
@@ -266,19 +265,19 @@ class Analizador:
         # Ignorado el comentario
 
         # Acá yo debería volarme el nivel Intrucción por que no aporta nada
-        return Nodo(TipoNodo.INSTRUCCIÓN, nodos=nodos_nuevos)
+        return Nodo(TipoNodo.INSTRUCCION, nodos=nodos_nuevos)
 
 
-    def __analizar_repetición(self): 
+    def __analizar_repetición(self): #LISTO
         """
         Repetición ::= Integrar ( Condición ) BloqueInstrucciones
         """
         nodos_nuevos = []
 
         # Todos presentes en ese orden... sin opciones
-        self.__verificar('Integrar')
+        self.__verificar('integrar')
         
-        nodos_nuevos += [self.__analizar_condición()]
+        #nodos_nuevos += [self.__analizar_condición()] #No se usa en nuestra gramática
 
         # Yo acá tengo dos elecciones... creo otro nivel con Bloque de
         # instrucciones o pongo directamente las instrucciones en este
@@ -286,7 +285,7 @@ class Analizador:
         # grande el árbol
         nodos_nuevos += [self.__analizar_bloque_instrucciones()]
 
-        return Nodo(TipoNodo.REPETICIÓN, nodos=nodos_nuevos)
+        return Nodo(TipoNodo.REPETICION, nodos=nodos_nuevos)
         
 
     def __analizar_bifurcación(self): #Listo
@@ -303,7 +302,7 @@ class Analizador:
         elif self.componente_actual.texto == 'elif':
             nodos_nuevos += [self.__analizar_elif()]
         # y sino era solo el 'diay siii'
-        return Nodo(TipoNodo.BIFURCACIÓN, nodos=nodos_nuevos)
+        return Nodo(TipoNodo.BIFURCACION, nodos=nodos_nuevos)
 
     def __analizar_if(self): #Listo
         """
@@ -313,7 +312,7 @@ class Analizador:
 
         # Todos presentes en ese orden... sin opciones
         self.__verificar('if')
-        nodos_nuevos += [self.__analizar_condición()]
+        #nodos_nuevos += [self.__analizar_condición()] #No se usa en nuestra gramática
         
 
         nodos_nuevos += [self.__analizar_bloque_instrucciones()]
@@ -457,7 +456,7 @@ class Analizador:
 
         # Este hay que validarlo para evitar el error en caso de que no
         # aparezca
-        if self.componente_actual.tipo in [Componente.IDENTIFICADOR, Componente.ENTERO, Componente.FLOTANTE, Componente.VALOR_VERDAD, Componente.TEXTO] :
+        if self.componente_actual.tipo in [Componente.IDENTIFICADOR, Componente.ENTERO, Componente.FLOTANTE, Componente.CRUDO_VALOR_VERDAD, Componente.TEXTO] :
             nodos_nuevos += [self.__analizar_valor()]
 
         # Sino todo bien...
@@ -470,7 +469,7 @@ class Analizador:
         nodos_nuevos = []        
 
         # Sin opciones
-        self.__verificar_tipo_componente(Componente.Error)
+        self.__verificar_tipo_componente(Componente.ERROR)
         nodo = Nodo(TipoNodo.ERROR, contenido =self.componente_actual.texto)
         self.__pasar_siguiente_componente()
         return nodo
@@ -522,7 +521,7 @@ class Analizador:
         if self.componente_actual.tipo is Componente.TEXTO:
             nodo = self.__verificar_texto()
 
-        elif  self.componente_actual.tipo is Componente.VALOR_VERDAD:
+        elif  self.componente_actual.tipo is Componente.CRUDO_VALOR_VERDAD:
             nodo = self.__verificar_valor_verdad()
 
         else:
@@ -549,7 +548,7 @@ class Analizador:
 
 
 
-    def __analizar_bloque_instrucciones(self):
+    def __analizar_bloque_instrucciones(self): #Listo
         """
         Este es nuevo y me lo inventé para simplicicar un poco el código...
         correspondería actualizar la gramática.
@@ -565,8 +564,8 @@ class Analizador:
         nodos_nuevos += [self.__analizar_instrucción()]
 
         # Acá todo puede venir uno o más 
-        while self.componente_actual.texto in ['integrar', 'if', 'return', 'Error'] \
-                or self.componente_actual.tipo == Componente.IDENTIFICADOR:
+        while self.componente_actual.texto in ['integrar', 'if', 'return', 'quemo'] \
+                or self.componente_actual.tipo == Componente.IDENTIFICADOR:  #Se puso quemo en vez de Error
         
             nodos_nuevos += [self.__analizar_instrucción()]
 
@@ -707,7 +706,7 @@ class Analizador:
 
 
 
-    def __pasar_siguiente_componente(self):
+    def __pasar_siguiente_componente(self): #To do, revienta en el del profe también
         """
         Pasa al siguiente componente léxico
 

@@ -1,4 +1,5 @@
 import os
+#from Analizador import Analizador
 from Explorador.Explorador import Explorador
 
 
@@ -24,7 +25,8 @@ for archivo_nombre in archivos_ejemplos:
         print(componente.tipo, componente.texto)  # Imprimir los componentes generados
 
     
-
+    #Si se comenta todo lo que está debajo de esto funciona hasta el explorador
+    
     """ # Crear el analizador
     analizador = Analizador(componentes)
     
@@ -32,4 +34,4 @@ for archivo_nombre in archivos_ejemplos:
     arbol = analizador.analizar()
     
     # Imprimir el árbol resultante
-    print(arbol)"""
+    print(arbol) """

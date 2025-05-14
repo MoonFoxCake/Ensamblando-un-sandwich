@@ -1,7 +1,7 @@
 
-Michelin Saludar(string nombre) {
-    Incorporar saludo = "¡Hola " batir nombre batir "!"
-    Emplatar Servir saludo
+michelin Saludar(string nombre) {
+    incorporar saludo = "¡Hola " batir nombre batir "!"
+    emplatar servir saludo
 }
 
 -E Función de demostración para strings -o
