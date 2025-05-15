@@ -53,7 +53,6 @@ class Analizador:
         
         return Nodo(TipoNodo.PROGRAMA, nodos=nodos_nuevos)
 
-
     def __analizar_repeticion(self): 
         """
         Repetición ::= Integrar ( Condición ) BloqueInstrucciones
@@ -147,8 +146,7 @@ class Analizador:
         Bifurcación ::= if (elif)* (else)?
         """
         return self.__analizar_if()  # Toda la lógica ahora está dentro del `if`
-
-    
+  
     def __analizar_if(self):
         """
         if ::= if BloqueInstrucciones (elif BloqueInstrucciones)* (else BloqueInstrucciones)?
@@ -167,7 +165,6 @@ class Analizador:
             nodos_nuevos += [self.__analizar_else()]
 
         return Nodo(TipoNodo.BIFURCACION, nodos=nodos_nuevos)
-
 
     def __analizar_else(self): #Listo
         """
@@ -205,6 +202,10 @@ class Analizador:
         self.__verificar('ajustar')
 
         nodos_nuevos += [self.__analizar_expresion()]
+
+        nodos_nuevos += [self.__verificar_identificador()]
+
+        self.__verificar('=')
 
         # Acá no hay nada que hacer todas son obligatorias en esas
         # posiciones
@@ -309,7 +310,6 @@ class Analizador:
         nodo = Nodo(TipoNodo.ENTERO, valor =self.componente_actual.texto)
         self.__pasar_siguiente_componente()
         return nodo
-
 
     def __verificar_flotante(self): #Listo
         """
@@ -462,7 +462,6 @@ class Analizador:
         # asumimos que todo bien y seguimos.
 
         return Nodo(TipoNodo.PARA_FUNCION , valor=nodos_nuevos)
-     
 
     def __verificar(self, texto_esperado ): #Listo
 
