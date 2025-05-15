@@ -36,7 +36,7 @@ class Analizador:
         self.asa.raiz = self.__analizar_programa()
 
 
-    def __analizar_programa(self): #Listo PERO FALTAN COMENTARIOS
+    def __analizar_programa(self): #Listo
        
 
         nodos_nuevos = []
@@ -141,9 +141,7 @@ class Analizador:
         return Nodo(TipoNodo.EXPRESION , nodos=nodos_nuevos)
 
     def __analizar_función(self): #Listo
-        """
-        Función ::= (Comentario)? mae Identificador (ParámetrosFunción) BloqueInstrucciones
-        """
+  
 
         nodos_nuevos = []
 
@@ -160,7 +158,7 @@ class Analizador:
         self.__verificar('}')
         # La función lleva el nombre del identificador
         return Nodo(TipoNodo.FUNCION, \
-                contenido=nodos_nuevos[0].contenido, nodos=nodos_nuevos) #revisar .contenido como se maneja en arbol
+                contenido=nodos_nuevos[0].valor, nodos=nodos_nuevos) #revisar .contenido como se maneja en arbol
 
     def __analizar_invocación(self): #Listo
         """
@@ -194,7 +192,7 @@ class Analizador:
         # Esto funciona con lógica al verrís... Si no revienta con error
         # asumimos que todo bien y seguimos.
 
-        return Nodo(TipoNodo.PARA_FUNCION , nodos=nodos_nuevos)
+        return Nodo(TipoNodo.PARA_FUNCION , valor=nodos_nuevos)
     
 
     def __analizar_parámetros_invocación(self): #Listo
@@ -476,13 +474,6 @@ class Analizador:
     
 
 
-
-
-
-
-
-
-
     """
     def __analizar_principal(self):
         
@@ -502,14 +493,6 @@ class Analizador:
 
         return Nodo(TipoNodo.PRINCIPAL, nodos=nodos_nuevos)
     """
-
-
-
-
-
-
-
-
 
 
     def __analizar_literal(self): #Listo
@@ -557,9 +540,6 @@ class Analizador:
         """
         nodos_nuevos = []
 
-        # Obligatorio
-        self.__verificar('{')
-
         # mínimo una
         nodos_nuevos += [self.__analizar_instrucción()]
 
@@ -568,9 +548,6 @@ class Analizador:
                 or self.componente_actual.tipo == Componente.IDENTIFICADOR:  #Se puso quemo en vez de Error
         
             nodos_nuevos += [self.__analizar_instrucción()]
-
-        # Obligatorio
-        self.__verificar('}')
 
         return Nodo(TipoNodo.BLOQUE_INSTRUCCIONES, nodos=nodos_nuevos)
 
@@ -665,7 +642,7 @@ class Analizador:
         """
         self.__verificar_tipo_componente(Componente.IDENTIFICADOR)
 
-        nodo = Nodo(TipoNodo.IDENTIFICADOR, contenido =self.componente_actual.texto)
+        nodo = Nodo(TipoNodo.IDENTIFICADOR, valor =self.componente_actual.texto)
         self.__pasar_siguiente_componente()
         return nodo
 
@@ -679,7 +656,7 @@ class Analizador:
 
         if self.componente_actual.texto != texto_esperado:
             print()
-            raise SyntaxError ((texto_esperado, str(self.componente_actual)))
+            raise SyntaxError ((texto_esperado,self.componente_actual.texto)) 
 
         self.__pasar_siguiente_componente()
 
@@ -692,18 +669,7 @@ class Analizador:
 
         if self.componente_actual.tipo is not tipo_esperado:
             print()
-            raise SyntaxError ((tipo_esperado, str(self.componente_actual)))
-
-
-
-
-
-
-
-
-
-
-
+            raise SyntaxError ((tipo_esperado, self.componente_actual.texto))
 
 
     def __pasar_siguiente_componente(self): #To do, revienta en el del profe también
@@ -714,7 +680,7 @@ class Analizador:
         """
         self.posición_componente_actual += 1
 
-        if self.posición_componente_actual >= self.cantidad_componentes:
+        if self.posición_componente_actual >= self.cantidad_componentes - 1:
             return
 
         self.componente_actual = \

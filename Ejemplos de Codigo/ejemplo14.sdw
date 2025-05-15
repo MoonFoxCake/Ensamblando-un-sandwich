@@ -17,6 +17,6 @@ michelin calculadora(float num1, float num2, int operacion) {
         servir num1 amasar num2
     }
     else {
-        quemo "Operación inválida. Usa: 1(+), 2(-), 3(/), 4(×)"
+        servir "Operación inválida. Usa: 1(+), 2(-), 3(/), 4(×)"
     }
 }

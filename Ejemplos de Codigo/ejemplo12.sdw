@@ -6,6 +6,6 @@ michelin convertir_temperatura(float valor, string direccion) {
     elif direccion mismo sabor que "FtoC" {
         servir (valor partir 32) amasar (5 colar 9)
     }
-    else quemo "Dirección no válida. Use 'CtoF' o 'FtoC'"
+    else servir "Dirección no válida. Use 'CtoF' o 'FtoC'"
 }
 
