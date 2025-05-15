@@ -1,8 +1,0 @@
-michelin potencia(int base, int exponente) {
-    incorporar int resultado = 1
-    integrar(exponente mas sazonado que 0) {
-        ajustar resultado = resultado amasar base
-        ajustar exponente = exponente partir 1
-    }
-    servir resultado
-}

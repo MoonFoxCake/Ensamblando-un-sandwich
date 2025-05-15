@@ -1,0 +1,6 @@
+
+michelin par_impar(int numero) {
+    incorporar int residuo = numero sobras 2
+    if residuo mismo sabor que 0 servir "Par"
+    else servir "Impar"
+}

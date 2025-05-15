@@ -1,0 +1,9 @@
+
+michelin Saludar(string nombre) {
+    incorporar saludo = "¡Hola " batir nombre batir "!"
+    emplatar servir saludo
+}
+
+-E Función de demostración para strings -o
+Saludar("Master Chef")
+
