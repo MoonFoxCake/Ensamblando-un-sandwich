@@ -53,7 +53,6 @@ class Analizador:
         
         return Nodo(TipoNodo.PROGRAMA, nodos_nuevos)
 
-<<<<<<< HEAD:Analizador/AnalizadorLimpio.py
     def __analizar_palabra_clave(self): #Listo
         """
         PalabraClave ::= (michelin | servir | ajustar)
@@ -64,8 +63,6 @@ class Analizador:
         self.__pasar_siguiente_componente()
         return nodo
 
-=======
->>>>>>> f31a4d774b7e44de9344b756bfe47345466ce8e7:Analizador/Analizador copy.py
     def __analizar_repeticion(self): 
         """
         Repeticion ::= Integrar ( Condicion ) BloqueInstrucciones
@@ -166,14 +163,9 @@ class Analizador:
         """
         Bifurcacion ::= if (elif)* (else)?
         """
-<<<<<<< HEAD:Analizador/AnalizadorLimpio.py
         return self.__analizar_if()  # Toda la logica ahora esta dentro del `if`
 
     
-=======
-        return self.__analizar_if()  # Toda la lógica ahora está dentro del `if`
-  
->>>>>>> f31a4d774b7e44de9344b756bfe47345466ce8e7:Analizador/Analizador copy.py
     def __analizar_if(self):
         """
         if ::= if BloqueInstrucciones (elif BloqueInstrucciones)* (else BloqueInstrucciones)?
@@ -233,20 +225,9 @@ class Analizador:
         nodos_nuevos = []
 
         self.__verificar('ajustar')
-<<<<<<< HEAD:Analizador/AnalizadorLimpio.py
         nodos_nuevos += [self.__verificar_identificador()]
         self.__verificar('=') # Aca no hay nada que hacer todas son obligatorias en esas
         # Aca no hay nada que hacer todas son obligatorias en esas
-=======
-
-        nodos_nuevos += [self.__analizar_expresion()]
-
-        nodos_nuevos += [self.__verificar_identificador()]
-
-        self.__verificar('=')
-
-        # Acá no hay nada que hacer todas son obligatorias en esas
->>>>>>> f31a4d774b7e44de9344b756bfe47345466ce8e7:Analizador/Analizador copy.py
         # posiciones
         nodos_nuevos += [self.__analizar_expresion_matematica()]
 
@@ -485,7 +466,7 @@ class Analizador:
         self.__verificar('}')
         self.__pasar_siguiente_componente
         return Nodo(TipoNodo.FUNCION, \
-                valor=nodos_nuevos[0].valor, nodos_nuevos)
+                valor=nodos_nuevos[0].valor, nodos = nodos_nuevos)
 
     def __analizar_parametros_funcion(self): #Listo
         """
