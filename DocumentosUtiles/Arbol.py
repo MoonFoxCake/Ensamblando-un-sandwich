@@ -57,13 +57,21 @@ class Nodo:
 class ArbolSintaxisAbstracta:
     def __init__(self, raiz=None):
         self.raiz = raiz
+    def imprimir(self):
+        if self.raiz is not None:
+            print("Árbol de Sintaxis Abstracta:")
+            ArbolSintaxisAbstracta.imprimir_preorden(self.raiz)
+        else:
+            print("El árbol está vacío.")
 
-    def imprimir_preorden(self):
-        self.__preorden(self.raiz)
-
-    def __preorden(self, nodo):
-        if nodo is None:
-            return
-        print(nodo.tipo)
-        for hijo in nodo:
-            self.__preorden(hijo.valor)
+    def imprimir_preorden(nodo):
+        if nodo is not None:
+            print("-------------------------")
+            if type(nodo) == str:
+                print(nodo)
+            else:
+                print(nodo.tipo)
+                for hijo in nodo.valor:
+                    ArbolSintaxisAbstracta.imprimir_preorden(hijo)
+        else:
+            print("El árbol está vacío.")

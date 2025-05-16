@@ -31,7 +31,7 @@ for archivo_nombre in archivos_ejemplos:
     analizador = Analizador(componentes)
 
     analizador.analizar()
-    analizador.asa.imprimir_preorden()  # Imprimir el árbol de sintaxis abstracta en preorden   
+    analizador.asa.imprimir()  # Imprimir el árbol de sintaxis abstracta en preorden   
     
 
 
