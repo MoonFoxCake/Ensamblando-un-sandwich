@@ -32,7 +32,7 @@ for archivo_nombre in archivos_ejemplos:
     
     # Analizar el contenido y crear el árbol
     analizador.analizar()
-    analizador.imprimir_asa()
+    
     
 
 

@@ -67,7 +67,7 @@ class Explorador:
                             (Componente.IDENTIFICADOR, r'^([a-zA-Z_]([a-zA-z0-9])*)'),
                             (Componente.FLOTANTE, r'^(-?[0-9]+\.[0-9]+)'),
                             (Componente.ENTERO, r'^(-?[0-9]+)'),
-                            (Componente.CRUDO_VALOR_VERDAD, r'^(True|False)'),
+                            (Componente.CRUDO_VALOR_VERDAD, r'^(true|false)'),
                             (Componente.PUNTUACION, r'^([/\{}()])'),
                             (Componente.BLANCOS, r'^(\s)+'),
                             (Componente.SEPARADORES, r'^(;|,|\.)'),

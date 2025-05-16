@@ -3,7 +3,8 @@ michelin recetatarta (harina, azucar) {
     integrar (horneados menos_cocido_que 10) {
         ajustar harina = harina colar 2
         ajustar azucar = azucar colar 1
-
+        incorporar pasteles = 0
+        pasteles = "sirve"
         -E Esto controla el ciclo -o
         ajustar horneados = horneados batir 1
 
@@ -11,10 +12,15 @@ michelin recetatarta (harina, azucar) {
             servir "No hay harina"
             return
         }
-        if (harina menos_cocido_que 0) {
+        elif (harina menos_cocido_que 0) {
             servir "No hay azucar"
             return
         }
+        else  {
+            servir horneados
+            return
+        }
+
     }
     
     -E Fin -o

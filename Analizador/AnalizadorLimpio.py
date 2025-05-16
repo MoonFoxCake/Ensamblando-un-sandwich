@@ -200,7 +200,9 @@ class Analizador:
 
         # Todos presentes en ese orden... sin opciones
         self.__verificar('else')
+        self.__verificar('{')
         nodos_nuevos += [self.__analizar_bloque_instrucciones()]
+        self.__verificar('}')
 
         return Nodo(TipoNodo.ELSE, nodos_nuevos)
 
@@ -213,7 +215,12 @@ class Analizador:
 
         # Todos presentes en ese orden... sin opciones
         self.__verificar('elif')
+        self.__verificar('(')
+        nodos_nuevos += [self.__analizar_condicion()]
+        self.__verificar(')')
+        self.__verificar('{')
         nodos_nuevos += [self.__analizar_bloque_instrucciones()]
+        self.__verificar('}')
 
         return Nodo(TipoNodo.ELIF, nodos_nuevos)
 
@@ -374,9 +381,27 @@ class Analizador:
 
         #todos son obligatorios en ese orden
         nodos_nuevos += [self.__verificar_identificador()]
-        self.__verificar('(')
-        nodos_nuevos += [self.__analizar_parametros_invocacion()]
-        self.__verificar(')')
+        if self.componente_actual.texto == '=' and self.__componente_venidero().tipo == Componente.IDENTIFICADOR: 
+                                                     
+            nodos_nuevos += [self.__verificar('=')]
+            nodos_nuevos += [self.__verificar_identificador()]
+
+        elif self.componente_actual.texto == '=' and self.__componente_venidero().tipo == Componente.ENTERO: 
+            nodos_nuevos += [self.__verificar('=')]
+            nodos_nuevos += [self.__verificar_entero()]
+        elif self.componente_actual.texto == '=' and self.__componente_venidero().tipo == Componente.FLOTANTE:  
+            nodos_nuevos += [self.__verificar('=')]
+            nodos_nuevos += [self.__verificar_flotante()]
+        elif self.componente_actual.texto == '=' and self.__componente_venidero().tipo == Componente.CRUDO_VALOR_VERDAD:
+            nodos_nuevos += [self.__verificar('=')]
+            nodos_nuevos += [self.__verificar_valor_verdad()]   
+        elif self.componente_actual.texto == '=' and self.__componente_venidero().tipo == Componente.TEXTO:
+            nodos_nuevos += [self.__verificar('=')]
+            nodos_nuevos += [self.__verificar_texto()] 
+        else:
+            self.__verificar('(')
+            nodos_nuevos += [self.__analizar_parametros_invocacion()]
+            self.__verificar(')')
 
         return Nodo(TipoNodo.INVOCACION , nodos_nuevos)
     
@@ -465,8 +490,7 @@ class Analizador:
         nodos_nuevos += [self.__analizar_bloque_instrucciones()]
         self.__verificar('}')
         self.__pasar_siguiente_componente
-        return Nodo(TipoNodo.FUNCION, \
-                valor=nodos_nuevos[0].valor, nodos = nodos_nuevos)
+        return Nodo(TipoNodo.FUNCION, valor=nodos_nuevos)
 
     def __analizar_parametros_funcion(self): #Listo
         """
