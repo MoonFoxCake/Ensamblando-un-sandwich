@@ -32,6 +32,7 @@ class TipoNodo(Enum):
     REPETICION = auto()  
     RETORNO = auto()
     TEXTO = auto()
+    AUXILIAR = auto()
     VALOR_VERDAD = auto()
 
 
@@ -63,6 +64,6 @@ class ArbolSintaxisAbstracta:
     def __preorden(self, nodo):
         if nodo is None:
             return
-        print(nodo)
+        print(nodo.tipo)
         for hijo in nodo:
-            self.__preorden(hijo)
+            self.__preorden(hijo.valor)

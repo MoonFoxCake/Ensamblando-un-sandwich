@@ -50,12 +50,12 @@ class Analizador:
 
             else:
                 break
-        
+
         return Nodo(TipoNodo.PROGRAMA, nodos_nuevos)
 
     def __analizar_palabra_clave(self): #Listo
         """
-        PalabraClave ::= (michelin | servir | ajustar)
+        PalabraClave ::= (michelin | servir | ajustar | dingding | marinar | pelar)
         """
         self.__verificar_tipo_componente(Componente.PALABRA_CLAVE)
 
@@ -96,7 +96,7 @@ class Analizador:
         nodos_nuevos += [self.__analizar_instruccion()]
 
         # Aca todo puede venir uno o mas 
-        while self.componente_actual.texto in ['integrar', 'if', 'return', 'servir' , 'else', 'elif', 'ajustar', 'incorporar'] \
+        while self.componente_actual.texto in ['integrar', 'if', 'dingding', 'servir' , 'else', 'elif', 'ajustar', 'incorporar', 'marinar', 'pelar'] \
                 or self.componente_actual.tipo == Componente.IDENTIFICADOR:  
         
             nodos_nuevos += [self.__analizar_instruccion()]
@@ -132,19 +132,22 @@ class Analizador:
         elif self.componente_actual.texto == 'incorporar':
             nodos_nuevos += [self.__analizar_asignacion()]
 
-
         elif self.componente_actual.texto == 'servir': #Revisar con nuestra gramatica
             nodos_nuevos += [self.__analizar_print()]
 
-        elif self.componente_actual.texto == 'return': #Revisar con nuestra gramatica
+        elif self.componente_actual.texto == 'dingding': #Revisar con nuestra gramatica
             nodos_nuevos += [self.__analizar_retorno()]
 
         elif self.componente_actual.texto == 'ajustar': #Revisar con nuestra gramatica
             nodos_nuevos += [self.__analizar_expresion()]
+
+        elif self.componente_actual.texto == 'marinar' or self.componente_actual.texto == 'pelar':
+            nodos_nuevos += [self.__analizar_auxiliar()]
         
         elif self.componente_actual.tipo == Componente.IDENTIFICADOR:
             nodos_nuevos += [self.__analizar_invocacion()]
 
+        
         else: # Muy apropiado el chiste de ir a revisar si tiene error al ultimo.
             nodos_nuevos += [self.__analizar_error()]
 
@@ -152,6 +155,23 @@ class Analizador:
 
         # Aca yo deberia volarme el nivel Intruccion por que no aporta nada
         return Nodo(TipoNodo.INSTRUCCION, nodos_nuevos)
+    
+    def __analizar_auxiliar(self): #Listo
+        """
+        Auxiliar ::= (marinar|pelar) (Valor)?
+        """
+        nodos_nuevos = []
+
+        # Este hay que validarlo para evitar el error en caso de que no
+        # aparezca
+        nodos_nuevos += [self.__analizar_palabra_clave()]
+        # Reconoce la variable
+        if self.componente_actual.tipo in [Componente.IDENTIFICADOR] :
+            nodos_nuevos += [self.__analizar_valor()]
+        else:
+            raise SyntaxError('Una función auxiliar requiere de una variable.', self.componente_actual)
+        
+        return Nodo(TipoNodo.AUXILIAR, nodos_nuevos)
 
     def __analizar_error(self): #Listo
         self.__verificar_tipo_componente(Componente.ERROR)
@@ -231,7 +251,7 @@ class Analizador:
 
         nodos_nuevos = []
 
-        self.__verificar('ajustar')
+        nodos_nuevos += [self.__analizar_palabra_clave()]
         nodos_nuevos += [self.__verificar_identificador()]
         self.__verificar('=') # Aca no hay nada que hacer todas son obligatorias en esas
         # Aca no hay nada que hacer todas son obligatorias en esas
@@ -528,8 +548,8 @@ class Analizador:
         Retorno :: return (Valor)?
         """
         nodos_nuevos = []
-        self.__verificar('return')
-
+        if self.componente_actual.texto == 'dingding':
+            nodos_nuevos += [self.__analizar_palabra_clave()]
         # Este hay que validarlo para evitar el error en caso de que no
         # aparezca
         if self.componente_actual.tipo in [Componente.IDENTIFICADOR, Componente.ENTERO, Componente.FLOTANTE, Componente.CRUDO_VALOR_VERDAD, Componente.TEXTO] :

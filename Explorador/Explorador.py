@@ -57,10 +57,10 @@ class Explorador:
 
 
     componentes_posibles = [(Componente.RESEÑA, r'-E .*? -o'), # Arreglar
-                            (Componente.PALABRA_CLAVE, r'^(michelin|servir|ajustar)'),
+                            (Componente.PALABRA_CLAVE, r'^(michelin|servir|ajustar|dingding|marinar|pelar)'),
                             (Componente.CONDICIONAL, r'^(if|else|elif)'),
                             (Componente.REPETICION, r'^(integrar)'),
-                            (Componente.ASIGNACION, r'^(incorporar|marinar|pelar)'),
+                            (Componente.ASIGNACION, r'^(incorporar)'),
                             (Componente.OPERADOR, r'^(batir|colar|amasar|partir|sobras)'),
                             (Componente.COMPARADOR, r'^(mismo_sabor_que|mas_sazonado_que|menos_cocido_que|tan_horneado_como|tan_dulce_como)'),
                             (Componente.TEXTO, r'^(".?[^"]*)"'), 

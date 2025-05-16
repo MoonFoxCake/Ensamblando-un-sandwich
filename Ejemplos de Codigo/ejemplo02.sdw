@@ -1,6 +1,6 @@
 michelin sumatoria (int limite) {
-  incorporar int suma = 0
-  incorporar int i = 1
+  incorporar suma = 0
+  incorporar i = 1
 
   integrar (i menos_cocido_que limite) {
     ajustar suma = suma batir i
