@@ -2,7 +2,7 @@ michelin sumatoria (int limite) {
   incorporar int suma = 0
   incorporar int i = 1
 
-  integrar (i menos cocido que limite) {
+  integrar (i menos_cocido_que limite) {
     ajustar suma = suma batir i
     ajustar i = i batir 1
   }

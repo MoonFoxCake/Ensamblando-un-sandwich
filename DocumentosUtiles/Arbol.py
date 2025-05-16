@@ -2,36 +2,39 @@ from enum import Enum, auto
 import copy
 
 class TipoNodo(Enum):
-    PROGRAMA = auto()
     ASIGNACION = auto()
-    EXPRESION_MATEMATICA = auto()
+    BIFURCACION = auto()
+    BLOQUE_INSTRUCCIONES = auto()
+    COMPARACION = auto()
+    COMPARADOR = auto()
+    CONDICION = auto()
+    ELIF = auto()
+    ELSE = auto()
+    ENTERO = auto()
+    ERROR = auto()
     EXPRESION = auto()
+    EXPRESION_MATEMATICA = auto()
+    FLOTANTE = auto()
     FUNCION = auto()
+    IDENTIFICADOR = auto()
+    IF = auto()
+    INSTRUCCION = auto()
     INVOCACION = auto()
+    OPERADOR = auto()
+    OPERADOR_LOGICO = auto()
+    PALABRA_CLAVE = auto()
+    PARAMETROS = auto()
     PARA_FUNCION = auto()
     PARA_INVOCACION = auto()
-    INSTRUCCION = auto()
-    REPETICION = auto()
-    BIFURCACION = auto()
-    IF = auto()
-    ELSE = auto()
-    ELIF = auto()
-    OPERADOR_LOGICO = auto()
-    CONDICIONAL = auto()
-    COMPARACION = auto()
-    RETORNO = auto()
-    PRINT = auto()
-    ERROR = auto()
     PRINCIPAL = auto()
-    BLOQUE_INSTRUCCIONES = auto()
-    OPERADOR = auto()
-    VALOR_VERDAD = auto()
-    COMPARADOR = auto()
+    PRINT = auto()
+    PROGRAMA = auto()
+    REPETICION = auto()  
+    RETORNO = auto()
     TEXTO = auto()
-    ENTERO = auto()
-    FLOTANTE = auto()
-    IDENTIFICADOR = auto()
-    PARAMETROS = auto()
+    VALOR_VERDAD = auto()
+
+
 
 class Nodo:
     def __init__(self, tipo, valor=None):
@@ -61,5 +64,5 @@ class ArbolSintaxisAbstracta:
         if nodo is None:
             return
         print(nodo)
-        for hijo in nodo.nodos:
+        for hijo in nodo:
             self.__preorden(hijo)

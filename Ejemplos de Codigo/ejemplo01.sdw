@@ -1,8 +1,21 @@
 michelin recetatarta (harina, azucar) {
-    integrar (horneados < 10) {
-        servir horneados 
-        horneados = horneados batir 1
+    incorporar horneados = 0
+    integrar (horneados menos_cocido_que 10) {
+        ajustar harina = harina colar 2
+        ajustar azucar = azucar colar 1
+
+        -E Esto controla el ciclo -o
+        ajustar horneados = horneados batir 1
+
+        if (harina menos_cocido_que 0) {
+            servir "No hay harina"
+            return
+        }
+        if (harina menos_cocido_que 0) {
+            servir "No hay azucar"
+            return
+        }
     }
-    if harina mas_sazonado_que 200 "Demasiada harina"
-    -E Este es un comentario -o
+    
+    -E Fin -o
 }

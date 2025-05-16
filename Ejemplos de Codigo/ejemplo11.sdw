@@ -1,4 +1,3 @@
-
 michelin promedio(list numeros) {
     incorporar int suma = 0
     incorporar int i = 0

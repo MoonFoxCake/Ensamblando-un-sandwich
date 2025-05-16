@@ -9,24 +9,25 @@ import re
 
 class Componente(Enum):
     #Se usa auto para simplicidad y no tener que asignar valores manualmente, se pueden añadir mas, solo no sabia que poner
-    RESEÑA = auto()
-    PALABRA_CLAVE = auto()
-    CONDICIONAL = auto()
-    REPETICION = auto()
     ASIGNACION = auto()
-    OPERADOR = auto()
-    COMPARADOR = auto()
-    TEXTO = auto()
-    IDENTIFICADOR = auto()
-    ENTERO = auto()
-    FLOTANTE = auto()
-    CRUDO_VALOR_VERDAD = auto()
-    PUNTUACION = auto()
     BLANCOS = auto()
+    COMPARADOR = auto()
+    CONDICIONAL = auto()
+    CRUDO_VALOR_VERDAD = auto()
+    ENTERO = auto()
+    ERROR = auto()
+    FLOTANTE = auto()
+    IDENTIFICADOR = auto()
     NINGUNO = auto()
+    OPERADOR = auto()
+    PALABRA_CLAVE = auto()
+    PUNTUACION = auto()
+    REPETICION = auto()
+    RESEÑA = auto()
     SEPARADORES = auto()
     SIMBOLO = auto()
-    ERROR = auto()
+    TEXTO = auto()
+
 
 
 class info_lexico:
@@ -56,7 +57,7 @@ class Explorador:
 
 
     componentes_posibles = [(Componente.RESEÑA, r'-E .*? -o'), # Arreglar
-                            (Componente.PALABRA_CLAVE, r'^(michelin|servir|quemo|incorporar|ajustar)'),
+                            (Componente.PALABRA_CLAVE, r'^(michelin|servir|ajustar)'),
                             (Componente.CONDICIONAL, r'^(if|else|elif)'),
                             (Componente.REPETICION, r'^(integrar)'),
                             (Componente.ASIGNACION, r'^(incorporar|marinar|pelar)'),

@@ -3,7 +3,7 @@ michelin fibonacci(int n) {
   incorporar int b = 1
   incorporar int contador = 0
 
-  integrar(contador menos cocido que n) {
+  integrar(contador menos_cocido_que n) {
     servir "Número: "
     servir a
 

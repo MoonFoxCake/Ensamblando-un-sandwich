@@ -1,5 +1,5 @@
 import os
-from Analizador.Analizador import Analizador
+from Analizador.AnalizadorLimpio import Analizador
 from Explorador.Explorador import Explorador
 
 
@@ -31,9 +31,9 @@ for archivo_nombre in archivos_ejemplos:
     analizador = Analizador(componentes)
     
     # Analizar el contenido y crear el árbol
-    arbol = analizador.analizar()
+    analizador.analizar()
+    analizador.imprimir_asa()
     
-    # Imprimir el árbol resultante
-    print(arbol)
+
 
     break
