@@ -33,23 +33,14 @@ class Analizador:
         while (True):
 
             # Si es ciclo
-            if self.componente_actual.texto == 'integrar':
-                nodos_nuevos = [self.__analizar_repeticion()]
-
-            # Si es "print"
-            elif (self.componente_actual.texto == 'servir'): 
-                nodos_nuevos += [self.__analizar_print()]
-            
-            # Si es asignacion de variable
-            elif (self.componente_actual.texto == 'incorporar'): 
-                nodos_nuevos += [self.__analizar_asignacion()]
-
-            # Si es definicion de funcion
-            elif (self.componente_actual.texto == 'michelin'): 
-                nodos_nuevos += [self.__analizar_funcion()]
+            if (self.componente_actual.texto == 'michelin'): 
+                nodos_nuevos += [self.__analizar_def_funcion()]
 
             else:
-                break
+                if self.componente_actual ==  self.componentes_lexicos[-1]:
+                    break
+                else:
+                    nodos_nuevos += [self.__analizar_instruccion()]
 
         return Nodo(TipoNodo.PROGRAMA, nodos_nuevos)
 
@@ -69,10 +60,11 @@ class Analizador:
         """
         nodos_nuevos = []
         # Todos presentes en ese orden... sin opciones
-        self.__verificar('integrar')
+        
+        nodos_nuevos += [self.__analizar_palabra_clave()]
         self.__verificar('(')
         # Toma los parametros de la condicion
-        __analizar_condicion = self.__analizar_condicion()
+        nodos_nuevos += [self.__analizar_condicion()]
 
         self.__verificar(')')
         # Ahora pasamos al bloque de instrucciones
@@ -96,7 +88,7 @@ class Analizador:
         nodos_nuevos += [self.__analizar_instruccion()]
 
         # Aca todo puede venir uno o mas 
-        while self.componente_actual.texto in ['integrar', 'if', 'dingding', 'servir' , 'else', 'elif', 'ajustar', 'incorporar', 'marinar', 'pelar'] \
+        while self.componente_actual.texto in ['integrar', 'if', 'dingding', 'servir' , 'else', 'elif', 'ajustar', 'incorporar', 'marinar', 'pelar','michelin'] \
                 or self.componente_actual.tipo == Componente.IDENTIFICADOR:  
         
             nodos_nuevos += [self.__analizar_instruccion()]
@@ -125,6 +117,9 @@ class Analizador:
         # Aca todo con if por que son opcionales
         if self.componente_actual.texto == 'integrar':
             nodos_nuevos += [self.__analizar_repeticion()]
+
+        elif self.componente_actual.texto == 'michelin':
+            nodos_nuevos += [self.__analizar_def_funcion()]
 
         elif self.componente_actual.texto == 'if':
             nodos_nuevos += [self.__analizar_bifurcacion()]
@@ -183,23 +178,11 @@ class Analizador:
         """
         Bifurcacion ::= if (elif)* (else)?
         """
-        return self.__analizar_if()  # Toda la logica ahora esta dentro del `if`
 
-    
-    def __analizar_if(self):
-        """
-        if ::= if BloqueInstrucciones (elif BloqueInstrucciones)* (else BloqueInstrucciones)?
-        """
         nodos_nuevos = []
 
-        self.__verificar('if')
-        self.__verificar('(')
-        nodos_nuevos += [self.__analizar_condicion()]
-        self.__verificar(')')
-        self.__verificar('{')
-        nodos_nuevos += [self.__analizar_bloque_instrucciones()]
-        self.__verificar('}')
-
+        if self.componente_actual.texto == 'if':
+            nodos_nuevos += [self.__analizar_if()]
 
         # Cero o mas elif
         while self.componente_actual.texto == 'elif':
@@ -210,6 +193,25 @@ class Analizador:
             nodos_nuevos += [self.__analizar_else()]
 
         return Nodo(TipoNodo.BIFURCACION, nodos_nuevos)
+     
+
+    
+    def __analizar_if(self):
+        """
+        if ::= if BloqueInstrucciones (elif BloqueInstrucciones)* (else BloqueInstrucciones)?
+        """
+        nodos_nuevos = []
+
+        self.__verificar('if')
+
+        self.__verificar('(')
+        nodos_nuevos += [self.__analizar_condicion()]
+        self.__verificar(')')
+        self.__verificar('{')
+        nodos_nuevos += [self.__analizar_bloque_instrucciones()]
+        self.__verificar('}')
+
+        return Nodo(TipoNodo.IF, nodos_nuevos)
 
     def __analizar_else(self): #Listo
         """
@@ -262,7 +264,7 @@ class Analizador:
 
         nodos_nuevos += [self.__analizar_expresion_matematica()]
 
-        return Nodo(TipoNodo.EXPRESION , nodos_nuevos)
+        return Nodo(TipoNodo.EXPRESION_MATEMATICA, nodos_nuevos)
     
     def __analizar_expresion_matematica(self): #Listo
         """
@@ -282,10 +284,13 @@ class Analizador:
             nodos_nuevos += [self.__verificar_flotante()]
 
         # Este codigo se simplifica si invierto la opcion anterior y esta
-        else:
+        elif self.componente_actual.tipo == Componente.IDENTIFICADOR:
             nodos_nuevos += [self.__verificar_identificador()]
 
-        return Nodo(TipoNodo.EXPRESION_MATEMATICA, nodos_nuevos)
+        else:
+            nodos_nuevos += [self.__verificar_texto()]
+
+        return Nodo(TipoNodo.VARIABLE_MATEMATICA, nodos_nuevos)
 
     def __verificar_operador(self): #Listo
         """
@@ -300,12 +305,11 @@ class Analizador:
 
     def __analizar_asignacion(self):  #Listo
         nodos_nuevos = []
-        # El identificador en esta posicion es obligatorio
-        self.__verificar('incorporar')
+        nodos_nuevos += [self.__analizar_palabra_clave()]
         nodos_nuevos += [self.__verificar_identificador()]
         self.__verificar('=')
         # El siguiente bloque es de opcionales
-        if self.componente_actual.tipo in [Componente.ENTERO, Componente.FLOTANTE, Componente.CRUDO_VALOR_VERDAD, Componente.TEXTO] :
+        if self.componente_actual.tipo in [Componente.ENTERO, Componente.FLOTANTE, Componente.CRUDO_VALOR_VERDAD, Componente.TEXTO]: 
             nodos_nuevos += [self.__analizar_literal()]
 
         # Aca tengo que decidir si es Invocacion o solo un identificador
@@ -496,21 +500,25 @@ class Analizador:
         # Sino todo bien...
         return Nodo(TipoNodo.PRINT, nodos_nuevos)
     
-    def __analizar_funcion(self): #Listo
+    def __analizar_def_funcion(self): #Listo
         nodos_nuevos = []
 
-        if self.componente_actual.texto == 'michelin':
-            nodos_nuevos += [self.__analizar_palabra_clave()]
+        
+        nodos_nuevos += [self.__analizar_palabra_clave()]
         nodos_nuevos += [self.__verificar_identificador()]
-        self.__verificar('(')
-        nodos_nuevos += [self.__analizar_parametros_funcion()]
-        self.__verificar(')')
+
+        if self.componente_actual.texto == '(' and self.__componente_venidero().texto == ')':
+            self.__verificar('(')
+            self.__verificar(')')
+        else:
+            self.__verificar('(')
+            nodos_nuevos += [self.__analizar_parametros_funcion()]
+            self.__verificar(')')
 
         self.__verificar('{')
         nodos_nuevos += [self.__analizar_bloque_instrucciones()]
         self.__verificar('}')
-        self.__pasar_siguiente_componente
-        return Nodo(TipoNodo.FUNCION, valor=nodos_nuevos)
+        return Nodo(TipoNodo.DEF_FUNCION, valor=nodos_nuevos)
 
     def __analizar_parametros_funcion(self): #Listo
         """
@@ -519,16 +527,19 @@ class Analizador:
         nodos_nuevos = []
 
         # Fijo un valor tiene que haber
-        nodos_nuevos += [self.__verificar_identificador()]
-
-        while( self.componente_actual.texto == ','):
-            self.__verificar(',')
+        
+        if self.__componente_venidero == ')':
+            return Nodo(TipoNodo.PARAMETROS, nodos_nuevos)
+        else:
             nodos_nuevos += [self.__verificar_identificador()]
+            while( self.componente_actual.texto == ','):
+                self.__verificar(',')
+                nodos_nuevos += [self.__verificar_identificador()]
 
-        # Esto funciona con logica al verris... Si no revienta con error
-        # asumimos que todo bien y seguimos.
+            # Esto funciona con logica al verris... Si no revienta con error
+            # asumimos que todo bien y seguimos.
 
-        return Nodo(TipoNodo.PARA_FUNCION , valor=nodos_nuevos)
+            return Nodo(TipoNodo.PARA_FUNCION , valor=nodos_nuevos)
 
     def __verificar(self, texto_esperado ): #Listo
 

@@ -1,12 +1,13 @@
-
 michelin precioCompras (agua_cantidad, agua_precio, limon_cantidad, limon_precio) {
-  incorporar aux1 = agua_cantidad amasar agua_precio
-  incorporar aux2 = limon_cantidad amasar limon_precio
+  incorporar aux1 = 0
+  ajustar aux1 = agua_cantidad amasar agua_precio
+  incorporar aux2 = 0
+  ajustar aux2 = limon_cantidad amasar limon_precio
   servir "El total es"
-  incorporar total = aux1 batir aux2
+  incorporar total = 0
+  ajustar total = aux1 batir aux2
   servir total
   dingding
 }
 
 -E Esta receta recorre una lista de ingredientes y devuelve el precio -o
-

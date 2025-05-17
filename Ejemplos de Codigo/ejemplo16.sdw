@@ -16,3 +16,5 @@ michelin fibonacci(n) {
   -E Esta receta imprime la serie de Fibonacci hasta el enésimo valor -o
 }
 
+incorporar resultado = fibonacci(1)
+servir resultado

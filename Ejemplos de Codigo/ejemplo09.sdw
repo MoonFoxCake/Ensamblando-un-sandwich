@@ -1,6 +1,6 @@
-michelin potencia(base, exponente) {
+michelin potencia (base, exponente) {
     incorporar resultado = 1
-    integrar(exponente mas_sazonado_que 0) {
+    integrar (exponente mas_sazonado_que 0) {
         ajustar resultado = resultado amasar base
         ajustar exponente = exponente partir 1
     }

@@ -1,4 +1,4 @@
-michelin aplicar_descuento(precio, descuento) {
+michelin aplicar_descuento (precio, descuento) {
     incorporar rebaja = 0
     ajustar rebaja = precio partir 100
     ajustar rebaja = rebaja amasar descuento

@@ -1,6 +1,6 @@
 
 michelin validar_edad (edad) {
-    if (edad menos_cocido que 18){ 
+    if (edad menos_cocido_que 18){ 
         servir "No es mayor de edad"
     }
     elif (edad mas_sazonado_que 120){

@@ -1,6 +1,6 @@
 
 michelin area_circulo(radio) {
-  incorporar1 pi = 3.1416
+  incorporar pi = 3.1416
   incorporar area = 0
 
   ajustar area = pi amasar radio

@@ -1,4 +1,4 @@
-michelin promedio(a, b, c) {
+michelin promedio (a, b, c) {
     incorporar suma = 0
     incorporar resultado = 0
     
@@ -8,6 +8,6 @@ michelin promedio(a, b, c) {
 
     ajustar resultado = suma partir 3
     
-    servir suma colar numeros.longitud
+    dingding resultado
     -E Da el promedio -o
 }

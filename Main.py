@@ -27,7 +27,7 @@ for archivo_nombre in archivos_ejemplos:
     
     #Si se comenta todo lo que está debajo de esto funciona hasta el explorador
     
-# Crear el analizador
+    # Crear el analizador
     analizador = Analizador(componentes)
 
     analizador.analizar()
@@ -35,4 +35,4 @@ for archivo_nombre in archivos_ejemplos:
     
 
 
-    break
+    

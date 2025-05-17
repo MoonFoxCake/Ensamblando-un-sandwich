@@ -9,7 +9,7 @@ michelin convertir_temperatura(valor, direccion) {
         ajustar valor = valor partir 1.8
     }
     else{ 
-        servir "Dirección no válida. Usar 'CtoF' o 'FtoC'"
+        servir "Dirección no válida. Usar CtoF o FtoC"
     }
     dingding
 }

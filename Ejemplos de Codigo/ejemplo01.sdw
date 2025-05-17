@@ -1,28 +1,27 @@
-michelin recetatarta (harina, azucar) {
-    incorporar horneados = 0
-    integrar (horneados menos_cocido_que 10) {
-        ajustar harina = harina colar 2
-        pelar azucar
-        marinar azucar
-        incorporar pasteles = 0
-        pasteles = "sirve"
-        -E Esto controla el ciclo -o
-        ajustar horneados = horneados batir 1
+michelin Menu () {
+    servir "===== Opciones ====="
+    servir "1 - Suma"
+    servir "2 - Resta"
+    servir "3 - Multiplicación"
+    servir "4 - División"
 
-        if (harina menos_cocido_que 0) {
-            servir "No hay harina"
-            dingding "Malas noticias mi gente"
+    michelin calculadora (operando1, operando2, operacion) {
+        incorporar resultado = 0
+        if (operacion mismo_sabor_que 1) {
+            ajustar resultado = operando1 batir operando2
         }
-        elif (harina menos_cocido_que 0) {
-            servir "No hay azucar"
-            dingding pasteles
+        elif (operacion mismo_sabor_que 2) {
+            ajustar resultado = operando1 colar operando2
         }
-        else  {
-            servir horneados
-            dingding 1
+        elif (operacion mismo_sabor_que 3) {
+            ajustar resultado = operando1 amasar operando2
         }
-
+        elif (operacion mismo_sabor_que 4) {
+            ajustar resultado = operando1 partir operando2
+        } else {
+            servir "Usa una opción válida."
+            dingding
+        }
+        dingding resultado
     }
-    
-    -E Fin -o
 }

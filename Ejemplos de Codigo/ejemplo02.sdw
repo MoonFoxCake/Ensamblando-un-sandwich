@@ -1,4 +1,4 @@
-michelin sumatoria (int limite) {
+michelin sumatoria (limite) {
   incorporar suma = 0
   incorporar i = 1
 
