@@ -1,6 +1,8 @@
-{
-michelin aplicar_descuento(float precio, float descuento) {
-    incorporar float monto_descuento = precio amasar (descuento colar 100)  
-    servir precio partir monto_descuento}
-
+michelin aplicar_descuento(precio, descuento) {
+    incorporar rebaja = 0
+    ajustar rebaja = precio partir 100
+    ajustar rebaja = rebaja amasar descuento
+    ajustar precio = precio colar rebaja
+    dingding precio
 }
+

@@ -1,9 +1,10 @@
 
-michelin area_circulo(float radio) {
-  incorporar float pi = 3.1416
-  incorporar float area = 0
+michelin area_circulo(radio) {
+  incorporar1 pi = 3.1416
+  incorporar area = 0
 
-  ajustar area = pi amasar radio amasar radio
+  ajustar area = pi amasar radio
+  ajustar area = area amasar radio
 
   servir "El área del círculo es:"
   servir area

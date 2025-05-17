@@ -1,13 +1,13 @@
-michelin fibonacci(int n) {
-  incorporar int a = 0
-  incorporar int b = 1
-  incorporar int contador = 0
+michelin fibonacci(n) {
+  incorporar a = 0
+  incorporar b = 1
+  incorporar contador = 0
 
   integrar(contador menos_cocido_que n) {
     servir "Número: "
     servir a
 
-    incorporar int temp = a
+    incorporar temp = a
     ajustar a = b
     ajustar b = temp batir b
     ajustar contador = contador batir 1

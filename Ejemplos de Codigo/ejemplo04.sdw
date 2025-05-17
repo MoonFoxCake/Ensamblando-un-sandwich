@@ -1,16 +1,12 @@
 
-michelin sumar_lista(list ingredientes) {
-  incorporar int suma = 0
-  incorporar int i = 0
-
-  integrar(i menos cocido que ingredientes.longitud) {
-    ajustar suma = suma batir ingredientes[i]
-    ajustar i = i batir 1
-  }
-
-  servir "La suma total es:"
-  servir suma
+michelin precioCompras (agua_cantidad, agua_precio, limon_cantidad, limon_precio) {
+  incorporar aux1 = agua_cantidad amasar agua_precio
+  incorporar aux2 = limon_cantidad amasar limon_precio
+  servir "El total es"
+  incorporar total = aux1 batir aux2
+  servir total
+  dingding
 }
 
--E Esta receta recorre una lista de ingredientes y devuelve la suma total -o
+-E Esta receta recorre una lista de ingredientes y devuelve el precio -o
 

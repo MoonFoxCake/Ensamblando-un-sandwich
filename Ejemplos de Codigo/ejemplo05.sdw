@@ -1,7 +1,9 @@
 
-michelin Saludar(string nombre) {
-    incorporar saludo = "¡Hola " batir nombre batir "!"
-    emplatar servir saludo
+michelin Saludar(nombre) {
+    incorporar saludo = "¡Hola " 
+    servir saludo
+    servir nombre
+    dingding
 }
 
 -E Función de demostración para strings -o
