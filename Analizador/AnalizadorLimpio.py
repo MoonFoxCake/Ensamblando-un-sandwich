@@ -315,7 +315,7 @@ class Analizador:
         # Aca tengo que decidir si es Invocacion o solo un identificador
         elif self.componente_actual.tipo == Componente.IDENTIFICADOR:
 
-            if self.__componente_venidero().texto == '(': #Revisar con nuestra gramatica el .texto
+            if self.__componente_venidero().texto == '(': 
                 nodos_nuevos += [self.__analizar_invocacion()]
             else:
                 nodos_nuevos += [self.__verificar_identificador()]
