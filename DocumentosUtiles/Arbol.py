@@ -67,8 +67,9 @@ class ArbolSintaxisAbstracta:
     def imprimir_preorden(nodo):
         if nodo is not None:
             print("-------------------------")
-            if type(nodo) == str:
-                print(nodo)
+            if type(nodo.valor) == str:
+                print(nodo.tipo)
+                print(nodo.valor)
             else:
                 print(nodo.tipo)
                 for hijo in nodo.valor:
