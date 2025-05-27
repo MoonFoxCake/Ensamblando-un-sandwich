@@ -1,5 +1,5 @@
 import os
-from Analizador.AnalizadorLimpio import Analizador
+from Analizador.Analizador import Analizador
 from Explorador.Explorador import Explorador
 
 
