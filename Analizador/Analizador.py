@@ -143,7 +143,7 @@ class Analizador:
             nodos_nuevos += [self.__analizar_invocacion()]
 
         
-        else: # Muy apropiado el chiste de ir a revisar si tiene error al ultimo.
+        else: 
             nodos_nuevos += [self.__analizar_error()]
 
         # Ignorado el comentario
@@ -320,7 +320,7 @@ class Analizador:
             else:
                 nodos_nuevos += [self.__verificar_identificador()]
         else:
-            raise SyntaxError('Viejo... aca algo se quemo', self.componente_actual)
+            raise SyntaxError('Chef... aca algo se quemo', self.componente_actual)
 
         return Nodo(TipoNodo.ASIGNACION, nodos_nuevos)
     
