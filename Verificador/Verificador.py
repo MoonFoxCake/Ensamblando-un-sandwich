@@ -60,12 +60,25 @@ class Visitante:
         self.tabla_simbolos = nueva_tabla_simbolos
     
     
-    def __visitar(self, nodo_actual):
+    def __visitar(self, nodo: TipoNodo):
         '''Se usa para visitar los nodos del arbol'''
         '''Hay que poner aca todos los tipos de nodos a visitar'''
 
+        if nodo.tipo is TipoNodo.PROGRAMA:
+            self.__visitar_programa(nodo)
+
     def __visitar_asignacion(self,  nodo_actual):
         '''Asignacion es una variable que se le asigna un valor'''
+        self.tabla_simbolos.nuevo_registro(nodo_actual.nodos[0])
+
+        for nodo in nodo_actual.nodos:
+            nodo.visitar(self)
+        
+        nodo_actual.atributos['tipo'] =  nodo_actual.nodos[1].atributos['tipo']
+
+        nodo_actual.nodos[0].atributos['tipo']= nodo_actual.nodos[1].atributos['tipo']
+
+        
 
     def __visitar_bifurcacion(self,  nodo_actual):
         '''Bifurcacion es un if o un else'''
@@ -90,14 +103,32 @@ class Visitante:
         '''Mae ya deberia de saber es la fucken condicion'''
 
     def __visitar_entero(self,  nodo_actual):
-        '''Entero es un numero entero'''
+         """
+        Verifica si el tipo del componente lexico actuales de tipo ENTERO
+
+        Entero ::= -?[0-9]+
+        """
     
     def __visitar_error(self,  nodo_actual):
         '''Error, no deberia de llegar aca, pero para poder poner el error por si no se agarra con el analizador, o bueno si se pone quemar'''
 
     def __visitar_expresion_matematica(self,  nodo_actual):
+        """
+        ExpresionMatematica ::= (Expresion) | Numero | Identificador
 
-        '''Expresion matematica playo'''
+        Esta mica soportaria textos
+
+        """
+        for nodo in nodo_actual.nodos:
+            #Esta mica verifica que exista y si es global o local
+            if nodo.tipo == TipoNodo.IDENTIFICADOR:
+                registro = self.tabla_simbolos.verificar_existencia(nodo.contenido)
+
+            nodo.visitar(self)
+        #Anotamos que tipo de dato es 
+        nodo_actual.atributos['tipo'] = TiposDato.NUMERO
+         
+
 
     def ___visitar_expresion(self,  nodo_actual):
         '''2 expresiones matematicas con su operador'''
@@ -106,6 +137,12 @@ class Visitante:
     def __visitar_funcion(self,  nodo_actual):
         '''Funcion, def_funcion, tengo que ver que puto desmadre hicieron esos maes con el arbol'''
 
+    def __visitar_flotante(self,  nodo_actual):
+        """
+        Verifica si el tipo del componente lexico actuales de tipo FLOTANTE
+
+        Flotante ::= -?[0-9]+.[0-9]+
+        """
 
     def __visitar_identificador(self,  nodo_actual):
         '''Identificador es una variable o una funcion??'''
@@ -114,7 +151,10 @@ class Visitante:
         '''Invocacion es una funcion que se invoca, o sea se llama'''
 
     def __visitar_instruccion(self,  nodo_actual):
-        '''Instruccion es una instruccion, o sea un bloque de codigo que se ejecuta'''
+        '''nstruccion ::= (Repeticion | Bifurcacion | Asignacion | Invocacion | Retorno | Error | Comentario )'''
+
+    def __visitar_literal(self,  nodo_actual):
+        '''Literal es un valor literal, o sea un numero, una cadena, un booleano, etc'''
 
     def __visitar_matematica(self,  nodo_actual):
         '''Matematica es una operacion matematica'''
@@ -122,6 +162,12 @@ class Visitante:
     def __visitar_michelin(self,  nodo_actual):
         '''Michelin es el programa principal, o sea el def por asi decirlo playo'''
 
+    def __visitar_numero(self,  nodo_actual):
+        """
+        Numero ::= (Entero | Flotante)
+        """
+
+    
     def __visitar_operador(self,  nodo_actual):
         '''Operador es un operador matematico, como +, -, *, /'''
 
@@ -141,6 +187,23 @@ class Visitante:
 
     def __visitar_repeticion(self,  nodo_actual):
         '''Repeticion es un bucle, o sea un for o un while'''
+
+    def __visitar_texto(self,  nodo_actual):
+        """
+        Verifica si el tipo del componente lexico actuales de tipo TEXTO
+
+        Texto ::= ".*"
+        """
+    
+    def __visitar_tipo_componente(self,  nodo_actual):
+        '''Tipo componente es el tipo de dato del componente lexico, o sea el tipo de dato que se esta usando'''
+
+    def __visitar_valor_verdadero(self,  nodo_actual):
+    
+        """
+        CRUDO_VALOR_VERDAD ::= (True | False)
+        """
+       
 
     
 
