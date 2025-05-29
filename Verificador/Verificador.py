@@ -79,7 +79,6 @@ class Visitante:
     def __visitar_booleano(self,  nodo_actual):
         '''Para Booleanos'''
 
-    
 
     def __visitar_comparacion(self,  nodo_actual):
         '''Comparacion es una comparacion entre dos valores'''
@@ -96,6 +95,14 @@ class Visitante:
     def __visitar_error(self,  nodo_actual):
         '''Error, no deberia de llegar aca, pero para poder poner el error por si no se agarra con el analizador, o bueno si se pone quemar'''
 
+    def __visitar_expresion_matematica(self,  nodo_actual):
+
+        '''Expresion matematica playo'''
+
+    def ___visitar_expresion(self,  nodo_actual):
+        '''2 expresiones matematicas con su operador'''
+
+    
     def __visitar_funcion(self,  nodo_actual):
         '''Funcion, def_funcion, tengo que ver que puto desmadre hicieron esos maes con el arbol'''
 
@@ -103,11 +110,27 @@ class Visitante:
     def __visitar_identificador(self,  nodo_actual):
         '''Identificador es una variable o una funcion??'''
 
+    def __visitar_invocacion(self,  nodo_actual):
+        '''Invocacion es una funcion que se invoca, o sea se llama'''
+
+    def __visitar_instruccion(self,  nodo_actual):
+        '''Instruccion es una instruccion, o sea un bloque de codigo que se ejecuta'''
+
     def __visitar_matematica(self,  nodo_actual):
         '''Matematica es una operacion matematica'''
 
+    def __visitar_michelin(self,  nodo_actual):
+        '''Michelin es el programa principal, o sea el def por asi decirlo playo'''
+
     def __visitar_operador(self,  nodo_actual):
         '''Operador es un operador matematico, como +, -, *, /'''
+
+    def _visitar_parametros_funcion(self,  nodo_actual):
+        '''Parametros de una invocacion, o sea los parametros que se le pasan a una funcion al invocarla'''
+
+
+    def _visitar_parametros_invocacion(self,  nodo_actual):
+        '''Parametros de una invocacion, o sea los parametros que se le pasan a una funcion al invocarla'''
 
     def __visitar_print(self,  nodo_actual):
         '''Mae para printear'''
@@ -116,7 +139,8 @@ class Visitante:
     def __visitar_programa(self,  nodo_actual):
         '''Programa es el michelin si mal no me acuerdo'''
 
-    
+    def __visitar_repeticion(self,  nodo_actual):
+        '''Repeticion es un bucle, o sea un for o un while'''
 
     
 
@@ -131,6 +155,7 @@ class Verificador:
         self.Arbol = nuevoArbol
         self.tabla_simbolos = TablaSimbolos()
         self.visitador = Visitante(self.tabla_simbolos)
+        self.__AmbienteEstandar()
 
 
     def print_arbol(self):
