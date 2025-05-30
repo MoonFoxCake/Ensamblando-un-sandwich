@@ -180,13 +180,56 @@ class Visitante:
 
         
     def __visitar_auxiliar(self,  nodo_actual):
-
+        '''Bifurcacion es un if o un else'''
 
     def __visitar_bifurcacion(self,  nodo_actual):
         '''Bifurcacion es un if o un else'''
+        """
+        Bifurcacion ::= if (elif)* (else)?
+        """
+        
+        if nodo.tipo == TipoNodo.BIFURCACION:
+            for nodo in nodo_actual.nodos:
+                nodo.visitar(self)
+            nodo_actual.atributos['tipo'] = TiposDato.CUALQUIERA
+        if nodo.tipo ==  TipoNodo.IF:
+            self.tabla_simbolos.abrir_bloque()
+
+            for nodo in nodo_actual.nodos:
+                nodo.visitar(self)
+            self.tabla_simbolos.cerrar_bloque()  # Cerramos el bloque del if
+        if nodo.tipo == TipoNodo.ELIF:
+            self.tabla_simbolos.abrir_bloque()
+
+            for nodo in nodo_actual.nodos:
+                nodo.visitar(self)
+            self.tabla_simbolos.cerrar_bloque()  # Cerramos el bloque del elif
+        if nodo.tipo == TipoNodo.ELSE:
+            self.tabla_simbolos.abrir_bloque()
+
+            for nodo in nodo_actual.nodos:
+                nodo.visitar(self)
+            self.tabla_simbolos.cerrar_bloque()  # Cerramos el bloque del else
+        
+
 
     def __visitar_bloque_instrucciones(self,  nodo_actual):
-        '''usted que cree hp'''
+        """
+        Visita un bloque de instrucciones.
+        Estructura:
+
+            BloqueInstrucciones ::= { Instruccion+ }
+
+        """
+        for nodo in nodo_actual.nodos:
+            nodo.visitar(self)
+
+        #Si agarra algo lo pone como cualquiera
+        nodo_actual.atributos['tipo'] = TiposDato.EXTRA  
+
+        for nodo in nodo_actual.nodos:
+            if nodo.tipo != TipoNodo.EXTRA:
+                nodo_actual.atributos['tipo'] = nodo_actual.atributos['tipo']
 
     def __visitar_comparacion(self,  nodo_actual):
         '''Comparacion es una comparacion entre dos valores'''
@@ -221,7 +264,16 @@ class Visitante:
             raise Exception("Los tipos de los valores a comparar no son compatibles", valor_izquierdo.atributos['tipo'], valor_derecho.atributos['tipo'])
 
     def __visitar_comparador(self,  nodo_actual):
+        """
+        Comparador ::= mismo_sabor_que|mas_sazonado_que|menos_cocido_que|tan_horneado_como|tan_dulce_como
+        """
         '''No se que poner aca, pero es un comparador'''
+
+        if nodo_actual.contenido not in ['mas_sazonado_que', 'menos_cocido_que', 'tan_horneado_como', 'tan_dulce_como']:
+            nodo_actual.atributos['tipo'] = TiposDato.NUMERO 
+        else:
+            nodo_actual.atributos['tipo'] = TiposDato.CUALQUIERA
+            #Mae en teoria esto es solo verificar si es un numero ya que una A no deberia de ser mayor a un numero entonces se asume que los de arriba son solo para numeros
 
     def __visitar_condicion(self,  nodo_actual):
         '''Mae ya deberia de saber es la fucken condicion'''
@@ -231,11 +283,12 @@ class Visitante:
         nodo_actual.atributos['tipo'] = TiposDato.BOOLEANO  # Asignamos el tipo de dato de la condicion
 
     def __visitar_entero(self,  nodo_actual):
-         """
+        """
         Verifica si el tipo del componente lexico actuales de tipo ENTERO
 
         Entero ::= -?[0-9]+
         """
+        nodo_actual.atributos['tipo'] = TiposDato.ENTERO  # Asignamos el tipo de dato del entero, no se que mas quieres que haga
     
     def __visitar_error(self,  nodo_actual):
         '''Error, no deberia de llegar aca, pero para poder poner el error por si no se agarra con el analizador, o bueno si se pone quemar'''
@@ -285,12 +338,33 @@ class Visitante:
 
         Flotante ::= -?[0-9]+.[0-9]+
         """
+        nodo_actual.atributos['tipo'] = TiposDato.FLOTANTE
+        #Mae es solo ponerlo flotante, talvez podamos compactarlo a "visitar numero" o algo y ahi metemos flotante y entero
 
     def __visitar_identificador(self,  nodo_actual):
         '''Identificador es una variable o una funcion??'''
 
+        """
+        Di mae identificador puede ser cualquier vara que no caiga dentro de lo otro
+        Identificador ::= [a-zA-Z_]([a-zA-z0-9])*
+        """
+        nodo_actual.atributos['tipo'] = TiposDato.CUALQUIERA
+
     def __visitar_invocacion(self,  nodo_actual):
+        """
+        Invocacion ::= Identificador ( ParametrosInvocacion )
+        """
         '''Invocacion es una funcion que se invoca, o sea se llama'''
+
+        busqueda = self.tabla_simbolos.verificar_existencia(nodo_actual.nodos[0].contenido) #Mae la busqueda lo busca a ver si es algo real o no
+
+        if busqueda['Referencia'].tipo != TipoNodo.FUNCION:
+            raise Exception("No es una funcion, no se puede invocar", busqueda)
+        
+        for nodo in nodo_actual.nodos:
+            nodo.visitar(self)
+
+        nodo_actual.atributos['tipo'] = busqueda['Referencia'].atributos['tipo']  # Asignamos el tipo de dato de la invocacion
 
     def __visitar_instruccion(self,  nodo_actual):
         '''nstruccion ::= (Repeticion | Bifurcacion | Asignacion | Invocacion | Retorno | Error | Comentario )'''
@@ -309,6 +383,7 @@ class Visitante:
 
 
     def _visitar_parametros(self,  nodo_actual):
+        '''a'''
 
     def _visitar_parametros_funcion(self,  nodo_actual):
         '''Parametros de una invocacion, o sea los parametros que se le pasan a una funcion al invocarla'''
@@ -332,25 +407,45 @@ class Visitante:
         '''Mae para printear'''
 
     def __visitar_palabra_clave(self,  nodo_actual):
+        '''Mae, las palabras clave que tengamos'''
 
     def __visitar_programa(self,  nodo_actual):
         '''Programa es el michelin si mal no me acuerdo'''
 
     def __visitar_repeticion(self,  nodo_actual):
         '''Repeticion es un bucle, o sea un for o un while'''
+        """
+        Repeticion ::= Integrar ( Condicion ) BloqueInstrucciones
+        """
+
+        self.tabla_simbolos.abrir_bloque()  # Abrimos un bloque para la repeticion
+
+        for nodo in nodo_actual.nodos:
+            nodo.visitar(self)
+
+        self.tabla_simbolos.cerrar_bloque()  # Cerramos el bloque de la repeticion
+
+        nodo_actual.atributos['tipo'] = nodo_actual.nodos[1].atributos['tipo']  # Retorna el tipo
 
     def __visitar_texto(self,  nodo_actual):
         """
         Verifica si el tipo del componente lexico actuales de tipo TEXTO
 
-        Texto ::= ".*"
+        Texto ::= ~/\w(\s\w)*)?~
         """
+
+        nodo_actual.atributos['tipo'] = TiposDato.TEXTO
+        #Di mae....el tipo es texto asi que lo ponemos como texto
 
     def __visitar_valor_verdadero(self,  nodo_actual):
     
         """
         CRUDO_VALOR_VERDAD ::= (True | False)
         """
+
+        nodo_actual.atributos['tipo'] = TiposDato.VALOR_VERDAD
+
+        #Se le pone el tipo de valor que es verdadero, creo que booleano podria ir aca? pero puse ese por si las varas I guess
        
 
     
