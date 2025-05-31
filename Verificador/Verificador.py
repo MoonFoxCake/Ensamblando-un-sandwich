@@ -180,7 +180,7 @@ class Visitante:
 
         
     def __visitar_auxiliar(self,  nodo_actual):
-        '''Bifurcacion es un if o un else'''
+        '''Maes, aca no se que es'''
 
     def __visitar_bifurcacion(self,  nodo_actual):
         '''Bifurcacion es un if o un else'''
@@ -320,6 +320,15 @@ class Visitante:
 
         #for nodo in nodo_actual.nodos:
 
+        """
+        Expresion ::= ajustar ExpresionMatematica Operador ExpresionMatematica
+        """
+
+        for nodo in nodo_actual.nodos:
+            nodo.visitar(self)
+
+        nodo_actual.atributos['tipo'] = TiposDato.NUMERO  # Asignamos el tipo de dato de la expresion matematica
+
     
     def __visitar_funcion(self,  nodo_actual):
         '''Funcion, def_funcion, tengo que ver que puto desmadre hicieron esos maes con el arbol'''
@@ -378,9 +387,18 @@ class Visitante:
     def __visitar_michelin(self,  nodo_actual):
         '''Michelin es el programa principal, o sea el def por asi decirlo playo'''
     
+        for nodo in nodo_actual.nodos:
+            nodo.visitar(self)
+
+        nodo_actual.atributos['tipo'] = nodo_actual.nodos[0].atributos['tipo']  
+    
+    
     def __visitar_operador(self,  nodo_actual):
         '''Operador es un operador matematico, como +, -, *, /'''
 
+        nodo_actual.atributos['tipo'] = TiposDato.OPERADOR
+
+        #Aca el profe puso que era tipo NUMERO pero no se a ciencia cierta cual si o cual no  
 
     def _visitar_parametros(self,  nodo_actual):
         '''a'''
@@ -417,7 +435,6 @@ class Visitante:
         """
         Repeticion ::= Integrar ( Condicion ) BloqueInstrucciones
         """
-
         self.tabla_simbolos.abrir_bloque()  # Abrimos un bloque para la repeticion
 
         for nodo in nodo_actual.nodos:
