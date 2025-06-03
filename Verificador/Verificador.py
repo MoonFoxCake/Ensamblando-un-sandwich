@@ -400,7 +400,7 @@ class Visitante:
 
         #Aca el profe puso que era tipo NUMERO pero no se a ciencia cierta cual si o cual no  
 
-    def _visitar_parametros(self,  nodo_actual):
+    def _visitar_parametros(self,  nodo_actual):  #PENDIENTE
         '''a'''
 
     def _visitar_parametros_funcion(self,  nodo_actual):
@@ -421,14 +421,21 @@ class Visitante:
         
             nodo.visitar(self)
 
-    def __visitar_print(self,  nodo_actual):
-        '''Mae para printear'''
-
-    def __visitar_palabra_clave(self,  nodo_actual):
+    def __visitar_print(self,  nodo_actual):  
+        '''Para printear'''
+        for nodo in nodo_actual.nodos:
+            nodo.visitar(self)
+        nodo_actual.atributos['tipo'] = TiposDato.CUALQUIERA 
+        
+    def __visitar_palabra_clave(self,  nodo_actual):  
         '''Mae, las palabras clave que tengamos'''
+        nodo_actual.atributos['tipo'] = TiposDato.CUALQUIERA
 
     def __visitar_programa(self,  nodo_actual):
         '''Programa es el michelin si mal no me acuerdo'''
+        for nodo in nodo_actual.nodos:
+            nodo.visitar(self)
+        nodo_actual.atributos['tipo'] = nodo_actual.nodos[0].atributos['tipo'] if nodo_actual.nodos else TiposDato.CUALQUIERA
 
     def __visitar_repeticion(self,  nodo_actual):
         '''Repeticion es un bucle, o sea un for o un while'''
@@ -463,9 +470,6 @@ class Visitante:
         nodo_actual.atributos['tipo'] = TiposDato.VALOR_VERDAD
 
         #Se le pone el tipo de valor que es verdadero, creo que booleano podria ir aca? pero puse ese por si las varas I guess
-       
-
-    
 
 class Verificador:
 
