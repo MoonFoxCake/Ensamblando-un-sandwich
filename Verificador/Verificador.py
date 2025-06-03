@@ -400,8 +400,11 @@ class Visitante:
 
         #Aca el profe puso que era tipo NUMERO pero no se a ciencia cierta cual si o cual no  
 
-    def _visitar_parametros(self,  nodo_actual):  #PENDIENTE
-        '''a'''
+    def _visitar_parametros(self,  nodo_actual): 
+        '''Visita los párametros de una función o invocación'''
+        for nodo in nodo_actual.nodos:
+            nodo.visitar(self)
+        nodo_actual.atributos['tipo'] = TiposDato.CUALQUIERA
 
     def _visitar_parametros_funcion(self,  nodo_actual):
         '''Parametros de una invocacion, o sea los parametros que se le pasan a una funcion al invocarla'''
