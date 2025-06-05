@@ -35,9 +35,9 @@ for archivo_nombre in archivos_ejemplos:
     analizador.asa.imprimir()  # Imprimir el árbol de sintaxis abstracta en preorden   
 
     
-    Verificador = Verificador(analizador.asa)
-    Verificador.verificar()
-    Verificador.print_arbol()
+    verificador = Verificador(analizador.asa)
+    verificador.verificar()
+    verificador.print_arbol()
 
 
     

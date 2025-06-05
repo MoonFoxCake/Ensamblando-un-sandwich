@@ -69,14 +69,14 @@ class Visitante:
 
     def __visitar_asignacion(self,  nodo_actual):
         '''Asignacion es una variable que se le asigna un valor'''
-        self.tabla_simbolos.nuevo_registro(nodo_actual.nodos[0])
+        self.tabla_simbolos.nuevo_registro(nodo_actual.hijos[0])
 
-        for nodo in nodo_actual.nodos:
+        for nodo in nodo_actual.hijos:
             nodo.visitar(self)
         
-        nodo_actual.atributos['tipo'] =  nodo_actual.nodos[1].atributos['tipo']
+        nodo_actual.atributos['tipo'] =  nodo_actual.hijos[1].atributos['tipo']
 
-        nodo_actual.nodos[0].atributos['tipo']= nodo_actual.nodos[1].atributos['tipo']
+        nodo_actual.hijos[0].atributos['tipo']= nodo_actual.hijos[1].atributos['tipo']
 
         
 
@@ -119,7 +119,7 @@ class Visitante:
         Esta mica soportaria textos
 
         """
-        for nodo in nodo_actual.nodos:
+        for nodo in nodo_actual.hijos:
             #Esta mica verifica que exista y si es global o local
             if nodo.tipo == TipoNodo.IDENTIFICADOR:
                 registro = self.tabla_simbolos.verificar_existencia(nodo.contenido)
