@@ -79,8 +79,12 @@ class ArbolSintaxisAbstracta:
             if type(nodo.valor) == str:
                 print(nodo.tipo)
                 print(nodo.valor)
+                if nodo.atributos != {}:
+                    
+                    print(nodo.atributos)
             else:
                 print(nodo.tipo)
+                print(nodo.atributos)
                 for hijo in nodo.valor:
                     ArbolSintaxisAbstracta.imprimir_preorden(hijo)
         else:
