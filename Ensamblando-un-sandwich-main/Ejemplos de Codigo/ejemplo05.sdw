@@ -1,0 +1,11 @@
+
+michelin Saludar(nombre) {
+    incorporar saludo = "¡Hola " 
+    servir saludo
+    servir nombre
+    dingding
+}
+
+-E Función de demostración para strings -o
+Saludar("Master Chef")
+

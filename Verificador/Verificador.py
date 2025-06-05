@@ -3,7 +3,7 @@ from DocumentosUtiles.TiposDato import TiposDato
 
 class TablaSimbolos:
     '''Almacena informacion paraa el arbol con info del tipo y alcance, ya que se va a trabajar con niveles de profundidad'''
-
+    simbolos : list = []  # Lista de diccionarios que almacenan los registros
     profundidad : int = 0
 
     def abrir_bloque(self):
@@ -27,7 +27,7 @@ class TablaSimbolos:
 
         diccionario = {}
 
-        diccionario['Nombre'] = nodo.contenido
+        diccionario['Nombre'] = nodo.valor
         diccionario['Profundidad'] = self.profundidad
         diccionario['Referencia'] = nodo
         
@@ -235,7 +235,7 @@ class Visitante:
         '''Comparacion es una comparacion entre dos valores'''
         for nodo in nodo_actual.nodos:
             if nodo.tipo == TipoNodo.IDENTIFICADOR:
-                registro = self.tabla_simbolos.verificar_existencia(nodo.contenido)
+                registro = self.tabla_simbolos.verificar_existencia(nodo.valor)
             nodo.visitar(self)
         
         valor_izquierdo = nodo_actual.nodos[0]
@@ -269,7 +269,7 @@ class Visitante:
         """
         '''No se que poner aca, pero es un comparador'''
 
-        if nodo_actual.contenido not in ['mas_sazonado_que', 'menos_cocido_que', 'tan_horneado_como', 'tan_dulce_como']:
+        if nodo_actual.valor not in ['mas_sazonado_que', 'menos_cocido_que', 'tan_horneado_como', 'tan_dulce_como']:
             nodo_actual.atributos['tipo'] = TiposDato.NUMERO 
         else:
             nodo_actual.atributos['tipo'] = TiposDato.CUALQUIERA
@@ -294,7 +294,7 @@ class Visitante:
         '''Error, no deberia de llegar aca, pero para poder poner el error por si no se agarra con el analizador, o bueno si se pone quemar'''
         for nodo in nodo_actual.nodos:
             if nodo.tipo == TipoNodo.IDENTIFICADOR:
-                registro = self.tabla_simbolos.verificar_existencia(nodo.contenido)
+                registro = self.tabla_simbolos.verificar_existencia(nodo.valor)
             nodo.visitar(self)
 
     def __visitar_expresion_matematica(self,  nodo_actual):
@@ -307,7 +307,7 @@ class Visitante:
         for nodo in nodo_actual.nodos:
             #Esta mica verifica que exista y si es global o local
             if nodo.tipo == TipoNodo.IDENTIFICADOR:
-                registro = self.tabla_simbolos.verificar_existencia(nodo.contenido)
+                registro = self.tabla_simbolos.verificar_existencia(nodo.valor)
 
             nodo.visitar(self)
         #Anotamos que tipo de dato es 
@@ -332,7 +332,7 @@ class Visitante:
     
     def __visitar_funcion(self,  nodo_actual):
         '''Funcion, def_funcion, tengo que ver que puto desmadre hicieron esos maes con el arbol'''
-        self.tabla_simbolos.nuevo_registro(nodo_actual, TiposDato.FUNCION, nodo_actual.contenido)
+        self.tabla_simbolos.nuevo_registro(nodo_actual, TiposDato.FUNCION, nodo_actual.valor)
         self.tabla_simbolos.abrir_bloque()  # Abrimos un bloque para la funcion
         for nodo in nodo_actual.nodos:
             nodo.visitar(self)
@@ -365,7 +365,7 @@ class Visitante:
         """
         '''Invocacion es una funcion que se invoca, o sea se llama'''
 
-        busqueda = self.tabla_simbolos.verificar_existencia(nodo_actual.nodos[0].contenido) #Mae la busqueda lo busca a ver si es algo real o no
+        busqueda = self.tabla_simbolos.verificar_existencia(nodo_actual.nodos[0].valor) #Mae la busqueda lo busca a ver si es algo real o no
 
         if busqueda['Referencia'].tipo != TipoNodo.FUNCION:
             raise Exception("No es una funcion, no se puede invocar", busqueda)
@@ -409,7 +409,7 @@ class Visitante:
     def _visitar_parametros_funcion(self,  nodo_actual):
         '''Parametros de una invocacion, o sea los parametros que se le pasan a una funcion al invocarla'''
         for nodo in nodo_actual.nodos:
-            self.tabla_simbolos.nuevo_registro(nodo, TiposDato.PARAMETROS, nodo.contenido)
+            self.tabla_simbolos.nuevo_registro(nodo, TiposDato.PARAMETROS, nodo.valor)
             nodo.visitar(self)
 
 
@@ -417,10 +417,10 @@ class Visitante:
         '''Parametros de una invocacion, o sea los parametros que se le pasan a una funcion al invocarla'''
         for nodo in nodo_actual.nodos:
             if nodo.tipo == TipoNodo.IDENTIFICADOR:
-                registro = self.tabla_simbolos.verificar_existencia(nodo.contenido)
+                registro = self.tabla_simbolos.verificar_existencia(nodo.valor)
             
             elif nodo.tipo == TipoNodo.FUNCION:
-                raise Exception("Es una funcion, nada que ver con invocacion", nodo.contenido)
+                raise Exception("Es una funcion, nada que ver con invocacion", nodo.valor)
         
             nodo.visitar(self)
 
@@ -504,8 +504,8 @@ class Verificador:
         funciones_estandar = [ ('pelar', TiposDato.FUNCION), ('marinar', TiposDato.FUNCION), ('quemo', TiposDato.ERROR)]
 
         for Nombre, tipo in funciones_estandar:
-            nodo = Nodo(TiposDato.FUNCION, contendido=Nombre, atributos={'tipo': tipo})
-            self.tabla_simbolos.nuevo_registro(nodo)
+            nodo = Nodo(tipo=TiposDato.FUNCION, valor=Nombre, atributos={'tipo': tipo})
+            self.tabla_simbolos.nuevo_registro(nodo, tipo)
 
     def verificar(self):
         self.verificar.visitar(self.Arbol.raiz)

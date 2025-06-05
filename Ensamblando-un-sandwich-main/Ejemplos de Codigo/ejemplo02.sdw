@@ -1,0 +1,15 @@
+michelin sumatoria (limite) {
+  incorporar suma = 0
+  incorporar i = 1
+
+  integrar (i menos_cocido_que limite) {
+    ajustar suma = suma batir i
+    ajustar i = i batir 1
+  }
+
+  servir "La suma es: "
+  servir suma  
+}
+
+ -E Esta receta suma los números desde 1 hasta el límite dado -o
+

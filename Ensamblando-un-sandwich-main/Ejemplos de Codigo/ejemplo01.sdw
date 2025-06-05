@@ -1,0 +1,27 @@
+michelin Menu () {
+    servir "===== Opciones ====="
+    servir "1 - Suma"
+    servir "2 - Resta"
+    servir "3 - Multiplicación"
+    servir "4 - División"
+
+    michelin calculadora (operando1, operando2, operacion) {
+        incorporar resultado = 0
+        if (operacion mismo_sabor_que 1) {
+            ajustar resultado = operando1 batir operando2
+        }
+        elif (operacion mismo_sabor_que 2) {
+            ajustar resultado = operando1 colar operando2
+        }
+        elif (operacion mismo_sabor_que 3) {
+            ajustar resultado = operando1 amasar operando2
+        }
+        elif (operacion mismo_sabor_que 4) {
+            ajustar resultado = operando1 partir operando2
+        } else {
+            servir "Usa una opción válida."
+            dingding
+        }
+        dingding resultado
+    }
+}

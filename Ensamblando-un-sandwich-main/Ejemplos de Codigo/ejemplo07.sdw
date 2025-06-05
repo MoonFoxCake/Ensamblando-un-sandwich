@@ -1,0 +1,11 @@
+
+michelin par_impar(numero) {
+    incorporar residuo = 0
+    ajustar residuo = numero sobras 2
+    if (residuo mismo_sabor_que 0){ 
+        servir "Par"
+    }
+    else {
+        servir "Impar"
+    }
+}

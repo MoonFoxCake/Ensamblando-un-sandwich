@@ -1,0 +1,13 @@
+michelin promedio (a, b, c) {
+    incorporar suma = 0
+    incorporar resultado = 0
+    
+    ajustar suma = suma batir a
+    ajustar suma = suma batir b
+    ajustar suma = suma batir c
+
+    ajustar resultado = suma partir 3
+    
+    dingding resultado
+    -E Da el promedio -o
+}

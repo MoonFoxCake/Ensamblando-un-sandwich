@@ -1,0 +1,16 @@
+
+michelin convertir_temperatura(valor, direccion) {
+    if (direccion mismo_sabor_que "CtoF") {
+        ajustar valor = valor amasar 1.8
+        ajustar valor = valor batir 32
+    }
+    elif (direccion mismo_sabor_que "FtoC") {
+        ajustar valor = valor colar 32
+        ajustar valor = valor partir 1.8
+    }
+    else{ 
+        servir "Dirección no válida. Usar CtoF o FtoC"
+    }
+    dingding
+}
+

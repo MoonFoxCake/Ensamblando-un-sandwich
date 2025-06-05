@@ -39,19 +39,11 @@ class TipoNodo(Enum):
 
 
 class Nodo:
-
-
-    atributos : dict
-    def __init__(self, tipo, valor=None, atributos={}):
+    def __init__(self, tipo, valor=None):
         self.tipo = tipo  # Tipo del componente (por ejemplo, 'PALABRA_CLAVE', 'CONDICIONAL', etc.)
         self.valor = valor  # El valor asociado (por ejemplo, "michelin", "if", etc.)
         self.hijos = []  # Lista de hijos en el árbol (si es que tiene)
-        self.atributos = copy.deepcopy(atributos)  # Atributos adicionales del nodo, como el tipo de dato, etc.
-
-    def visitar(self, visitador):
-        return visitador.visitar(self)
-
-
+    
     def agregar_hijo(self, hijo):
         self.hijos.append(hijo)
 

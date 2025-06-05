@@ -1,0 +1,9 @@
+
+michelin tabla_del_7 (n) {
+    incorporar i = 0
+    incorporar resultado = 0
+    integrar(i menos_cocido_que n) {
+        ajustar resultado = resultado batir 7
+    }
+    dingding resultado
+}

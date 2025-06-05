@@ -1,7 +1,6 @@
 import os
 from Analizador.AnalizadorLimpio import Analizador
 from Explorador.Explorador import Explorador
-from Verificador.Verificador import Verificador
 
 
 # Ruta de la carpeta con los archivos de ejemplo
@@ -33,11 +32,7 @@ for archivo_nombre in archivos_ejemplos:
 
     analizador.analizar()
     analizador.asa.imprimir()  # Imprimir el árbol de sintaxis abstracta en preorden   
-
     
-    Verificador = Verificador(analizador.asa)
-    Verificador.verificar()
-    Verificador.print_arbol()
 
 
     
