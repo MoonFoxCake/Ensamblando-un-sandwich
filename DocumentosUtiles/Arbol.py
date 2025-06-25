@@ -39,19 +39,55 @@ class TipoNodo(Enum):
 
 
 class Nodo:
-    def __init__(self, tipo, valor=None):
-        self.tipo = tipo  # Tipo del componente (por ejemplo, 'PALABRA_CLAVE', 'CONDICIONAL', etc.)
-        self.valor = valor  # El valor asociado (por ejemplo, "michelin", "if", etc.)
-        self.hijos = []  # Lista de hijos en el árbol (si es que tiene)
-    
+
+    contenido : str
+    tipo : TipoNodo
+    atributos : dict
+    def __init__(self, tipo, valor=None, atributos={}, nodos=None):
+        self.tipo = tipo  
+        
+        # mae nos mamamos y lo trabajamos de 2 formas distintas...aca en teoria maneja ambas bien
+        if isinstance(valor, list) and nodos is None:
+            self.valor = None
+            self.hijos = valor  
+        else:
+            self.valor = valor  
+            self.hijos = nodos if nodos is not None else []  
+            
+        self.atributos = copy.deepcopy(atributos)  
+
+    def visitar(self, visitador):
+        return visitador.visitar(self)
+
+
     def agregar_hijo(self, hijo):
         self.hijos.append(hijo)
 
-    def __str__(self, nivel=0):
-        # Esto se usará para imprimir el árbol de manera legible
-        resultado = "  " * nivel + f"{self.tipo}: {self.valor}\n"
-        for hijo in self.hijos:
-            resultado += hijo.__str__(nivel + 1)
+    def __str__(self):
+        # Coloca la información del nodo
+        resultado = '{:30}\t'.format(self.tipo)
+        
+        if self.valor is not None:
+            resultado += '{:10}\t'.format(self.valor)
+        else:
+            resultado += '{:10}\t'.format('')
+
+        if self.atributos != {}:
+            resultado += '{:38}'.format(str(self.atributos))
+        else:
+            resultado += '{:38}\t'.format('')
+
+        if self.hijos != []:
+            resultado += '<'
+
+            # Imprime los tipos de los nodos del nivel siguiente
+            for hijo in self.hijos[:-1]:
+                if hijo is not None:
+                    resultado += '{},'.format(hijo.tipo)
+
+            resultado += '{}'.format(self.hijos[-1].tipo)
+            resultado += '>'
+
         return resultado
 
 
@@ -68,12 +104,23 @@ class ArbolSintaxisAbstracta:
     def imprimir_preorden(nodo):
         if nodo is not None:
             print("-------------------------")
-            if type(nodo.valor) == str:
+            if type(nodo.valor) == str or nodo.valor is None:
                 print(nodo.tipo)
-                print(nodo.valor)
+                if nodo.valor is not None:
+                    print(nodo.valor)
+                if nodo.atributos != {}:
+                    print(nodo.atributos)
             else:
                 print(nodo.tipo)
-                for hijo in nodo.valor:
+                print(nodo.atributos)
+                # If valor is a list, iterate through it
+                if isinstance(nodo.valor, list):
+                    for hijo in nodo.valor:
+                        if hasattr(hijo, 'tipo'):  # Check if it's a node
+                            ArbolSintaxisAbstracta.imprimir_preorden(hijo)
+            
+            # Also process hijos if they exist, but skip None nodes
+            for hijo in nodo.hijos:
+                if hijo is not None:  # Only process non-None children
                     ArbolSintaxisAbstracta.imprimir_preorden(hijo)
-        else:
-            print("El árbol está vacío.")
+        # Remove the else clause that prints "El árbol está vacío." for None nodes
