@@ -3,15 +3,10 @@ from DocumentosUtiles.Arbol import ArbolSintaxisAbstracta, Nodo, TipoNodo
 class VisitadorPython:
     tabuladores = 0
 
-
-    def visitar(self, nodo: TipoNodo):
-        """
-        jaja, totalmente no es una copia del verificador
-        """
-
-
-        resultado = ""
-
+    def __visitar(self, nodo: TipoNodo):
+        '''Se usa para visitar los nodos del arbol'''
+        
+        resultado = ''
 
         if nodo.tipo is TipoNodo.PROGRAMA:
             self.__visitar_programa(nodo)
@@ -65,7 +60,7 @@ class VisitadorPython:
             self.__visitar_identificador(nodo)
         
         elif nodo.tipo is TipoNodo.IF:
-            self.__visitar_bifurcacion(nodo) #No sabemos si hacer uno especifico para if
+            self.__visitar_bifurcacion(nodo) 
 
         elif nodo.tipo is TipoNodo.INSTRUCCION:
             self.__visitar_instruccion(nodo)
@@ -108,146 +103,93 @@ class VisitadorPython:
 
         elif nodo.tipo is TipoNodo.VALOR_VERDAD:
             self.__visitar_valor_verdadero(nodo)
-
-        else: 
-
-            raise Exception("Mae mi bro, que putas, aca no deberias estar")
         
+        else:
+            raise Exception('Nunca va a usarse este else, pero es por si acaso')
 
+        return resultado
+        
     def __visitar_programa(self, nodo_actual):
-        '''Programa es el michelin si mal no me acuerdo'''
-
-        instrucciones = []
-
-        for nodo in nodo_actual.hijos:
-            self.visitar(nodo)
-            instrucciones.append(nodo.visitar(self))
-
-            return "\n".join(instrucciones)
-        
-
+        pass
     def __visitar_asignacion(self, nodo_actual):
-        '''Asignacion es una variable que se le asigna un valor'''
+        pass
 
-        resultado = """{} = {}"""
-
-        instrucciones = []
-
-        for nodo in nodo_actual.hijos:
-            instrucciones.append(nodo.visitar(self))
-
-        return resultado.format(instrucciones[0], instrucciones[1])
-    
-    def __visitar_expresion_matematica(self, nodo_actual):
-        """
-        ExpresionMatematica ::= (Expresion) | Numero | Identificador
-
-        Esta mica soportaria textos
-
-        """
-        instrucciones = []
-
-        for nodo in nodo_actual.hijos:
-            instrucciones += [nodo.visitar(self)]
-
-        return ' '.join(instrucciones)
-    
-    def __visitar_expresion(self, nodo_actual):
-
-        '''2 expresiones matematicas con su operador'''
-
-        #for nodo in nodo_actual.hijos:
-
-        """
-        Expresion ::= ajustar ExpresionMatematica Operador ExpresionMatematica
-        """
-
-        instrucciones = []
-        for nodo in nodo_actual.hijos:
-            instrucciones+= [nodo.visitar(self)]
-
-        return ' '.join(instrucciones)
-    
-    def __visitar_funcion(self, nodo_actual):
-        
-        resultado = """\ndef {}({}):\n{}"""
-
-        instrucciones = []
-
-        for nodo in nodo_actual.hijos:
-
-            instrucciones += [nodo.visitar(self)]
-
-        return resultado.format(instrucciones[0], instrucciones[1], '\n'.join(instrucciones[2]))
-    
-    def __visitar_invocacion(self, nodo_actual):
-       resultado = """{}({})"""
-
-       instrucciones = []
-
-       for nodo in nodo_actual.hijos:
-           instrucciones += [nodo.visitar(self)]
-
-       return resultado.format(instrucciones[0],instrucciones[1])
-    
-
-    def __visitar_parametros_invocacion(self, nodo_actual):
-
-        parametros = []
-
-        for nodo in nodo_actual.hijos:
-            parametros.append(nodo.visitar(self))
-
-        if len(parametros) > 0: 
-            return ', '.join(parametros)
-        else:
-            return ''
-        
-
-    def __visitar_parametros_funcion(self, nodo_actual):
-
-        parametros = []
-
-        for nodo in nodo_actual.hijos:
-            parametros.append(nodo.visitar(self))
-
-        if len(parametros) > 0: 
-            return ', '.join(parametros)
-        else:
-            return ''
-        
-    def __visitar_instruccion(self, nodo_actual):
-        
-        valor = ""
-
-        for nodo in nodo_actual.hijos:
-            valor += nodo.visitar(self)
-
-        return valor
-    
-    def __visitar_repeticion(self, nodo_actual):
-
-        resultado = """while {}: \n{}"""
-
-        instrucciones = []
-
-        #Visitamos la condicion 
-        for nodo in nodo_actual.hijos:
-            instrucciones.append(nodo.visitar(self))
-
-        return resultado.format(instrucciones[0], instrucciones[1])
-    
     def __visitar_bifurcacion(self, nodo_actual):
+        pass
 
-        resultado = """{}{}"""
+    def __visitar_bloque_instrucciones(self, nodo_actual):
+        pass
 
-        instrucciones = []
+    def __visitar_comparacion(self, nodo_actual):
+        pass
 
-        for nodo in nodo_actual.hijos:
-            instrucciones.append(nodo.visitar(self))
+    def __visitar_comparador(self, nodo_actual):
+        pass
 
-        return resultado.format(instrucciones[0], '')
+    def __visitar_condicion(self, nodo_actual):
+        pass
 
+    def __visitar_funcion(self, nodo_actual):
+        pass
 
+    def __visitar_entero(self, nodo_actual):
+        pass
 
+    def __visitar_error(self, nodo_actual):
+        pass
 
+    def __visitar_expresion_matematica(self, nodo_actual):
+        pass
+
+    def __visitar_matematica(self, nodo_actual):
+        pass
+
+    def __visitar_flotante(self, nodo_actual):
+        pass
+
+    def __visitar_identificador(self, nodo_actual):
+        pass
+
+    def __visitar_instruccion(self, nodo_actual):
+        pass
+
+    def __visitar_invocacion(self, nodo_actual):
+        pass
+
+    def __visitar_operador(self, nodo_actual):
+        pass
+
+    def __visitar_palabra_clave(self, nodo_actual):
+        pass
+
+    def _visitar_parametros(self, nodo_actual):
+        pass
+
+    def _visitar_parametros_funcion(self, nodo_actual):
+        pass
+
+    def _visitar_parametros_invocacion(self, nodo_actual):
+        pass
+
+    def __visitar_michelin(self, nodo_actual):
+        pass
+
+    def __visitar_print(self, nodo_actual):
+        pass
+
+    def __visitar_repeticion(self, nodo_actual):
+        pass
+
+    def __visitar_retorno(self, nodo_actual):
+        pass
+
+    def __visitar_texto(self, nodo_actual):
+        pass
+
+    def __visitar_auxiliar(self, nodo_actual):
+        pass
+
+    def __visitar_valor_verdadero(self, nodo_actual):
+        pass
+    
+    

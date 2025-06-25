@@ -101,9 +101,9 @@ class Visitante:
             self.__visitar_funcion(nodo)
         
         elif nodo.tipo is TipoNodo.ELIF:
-            self.__visitar_bifurcacion(nodo) #En la función
+            self.__visitar_bifurcacion(nodo) 
         
-        elif nodo.tipo is TipoNodo.ELSE: #No sabemos si hacer uno especifico para else
+        elif nodo.tipo is TipoNodo.ELSE:
             self.__visitar_bifurcacion(nodo)
         
         elif nodo.tipo is TipoNodo.ENTERO:
@@ -128,7 +128,7 @@ class Visitante:
             self.__visitar_identificador(nodo)
         
         elif nodo.tipo is TipoNodo.IF:
-            self.__visitar_bifurcacion(nodo) #No sabemos si hacer uno especifico para if
+            self.__visitar_bifurcacion(nodo) 
 
         elif nodo.tipo is TipoNodo.INSTRUCCION:
             self.__visitar_instruccion(nodo)
@@ -171,10 +171,6 @@ class Visitante:
 
         elif nodo.tipo is TipoNodo.VALOR_VERDAD:
             self.__visitar_valor_verdadero(nodo)
-
-        ## elif nodo.tipo is TipoNodo.LITERAL:      No sabemos si ponerlo, ya que no se usa en el arbol
-        ##   self.__visitar_literal(nodo) 
-            
 
     def __visitar_asignacion(self,  nodo_actual):
         '''Asignacion es una variable que se le asigna un valor'''
