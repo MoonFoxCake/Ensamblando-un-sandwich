@@ -1,195 +1,260 @@
-from DocumentosUtiles.Arbol import ArbolSintaxisAbstracta, Nodo, TipoNodo
+from DocumentosUtiles.Arbol import Nodo, TipoNodo
 
 class VisitadorPython:
     tabuladores = 0
 
-    def __visitar(self, nodo: TipoNodo):
-        '''Se usa para visitar los nodos del arbol'''
-        
-        resultado = ''
+    def visitar(self, nodo: Nodo):
+        return self.__visitar(nodo)
 
+    def __visitar(self, nodo: Nodo):
         if nodo.tipo is TipoNodo.PROGRAMA:
-            self.__visitar_programa(nodo)
-
+            return self.__visitar_programa(nodo)
+        
         elif nodo.tipo is TipoNodo.ASIGNACION:
-            self.__visitar_asignacion(nodo)
+            return self.__visitar_asignacion(nodo)
         
         elif nodo.tipo is TipoNodo.BIFURCACION:
-            self.__visitar_bifurcacion(nodo)
-
+            return self.__visitar_bifurcacion(nodo)
+        
         elif nodo.tipo is TipoNodo.BLOQUE_INSTRUCCIONES:
-            self.__visitar_bloque_instrucciones(nodo)
+            return self.__visitar_bloque_instrucciones(nodo)
         
         elif nodo.tipo is TipoNodo.COMPARACION:
-            self.__visitar_comparacion(nodo)
+            return self.__visitar_comparacion(nodo)
         
         elif nodo.tipo is TipoNodo.COMPARADOR:
-            self.__visitar_comparador(nodo)
+            return self.__visitar_comparador(nodo)
         
         elif nodo.tipo is TipoNodo.CONDICION:
-            self.__visitar_condicion(nodo)
-
-        elif nodo.tipo is TipoNodo.DEF_FUNCION:
-            self.__visitar_funcion(nodo)
+            return self.__visitar_condicion(nodo)
         
-        elif nodo.tipo is TipoNodo.ELIF:
-            self.__visitar_bifurcacion(nodo) 
+        elif nodo.tipo is TipoNodo.DEF_FUNCION or nodo.tipo is TipoNodo.FUNCION:
+            return self.__visitar_funcion(nodo)
         
-        elif nodo.tipo is TipoNodo.ELSE: 
-            self.__visitar_bifurcacion(nodo)
+        elif nodo.tipo is TipoNodo.ELIF or nodo.tipo is TipoNodo.ELSE or nodo.tipo is TipoNodo.IF:
+            return self.__visitar_bifurcacion(nodo)
         
         elif nodo.tipo is TipoNodo.ENTERO:
-            self.__visitar_entero(nodo)
-
+            return self.__visitar_entero(nodo)
+        
         elif nodo.tipo is TipoNodo.ERROR:
-            self.__visitar_error(nodo)
+            return self.__visitar_error(nodo)
         
         elif nodo.tipo is TipoNodo.EXPRESION_MATEMATICA:
-            self.__visitar_expresion_matematica(nodo)
+            return self.__visitar_expresion_matematica(nodo)
         
         elif nodo.tipo is TipoNodo.VARIABLE_MATEMATICA:
-            self.__visitar_matematica(nodo)
+            return self.__visitar_matematica(nodo)
         
         elif nodo.tipo is TipoNodo.FLOTANTE:
-            self.__visitar_flotante(nodo)
-        
-        elif nodo.tipo is TipoNodo.FUNCION:
-            self.__visitar_funcion(nodo)
+            return self.__visitar_flotante(nodo)
         
         elif nodo.tipo is TipoNodo.IDENTIFICADOR:
-            self.__visitar_identificador(nodo)
+            return self.__visitar_identificador(nodo)
         
-        elif nodo.tipo is TipoNodo.IF:
-            self.__visitar_bifurcacion(nodo) 
-
         elif nodo.tipo is TipoNodo.INSTRUCCION:
-            self.__visitar_instruccion(nodo)
+            return self.__visitar_instruccion(nodo)
         
         elif nodo.tipo is TipoNodo.INVOCACION:
-            self.__visitar_invocacion(nodo)
+            return self.__visitar_invocacion(nodo)
         
         elif nodo.tipo is TipoNodo.OPERADOR:
-            self.__visitar_operador(nodo)
+            return self.__visitar_operador(nodo)
         
         elif nodo.tipo is TipoNodo.PALABRA_CLAVE:
-            self.__visitar_palabra_clave(nodo)
+            return self.__visitar_palabra_clave(nodo)
         
         elif nodo.tipo is TipoNodo.PARAMETROS:
-            self._visitar_parametros (nodo)
+            return self._visitar_parametros(nodo)
         
         elif nodo.tipo is TipoNodo.PARA_FUNCION:
-            self._visitar_parametros_funcion(nodo)
+            return self._visitar_parametros_funcion(nodo)
         
         elif nodo.tipo is TipoNodo.PARA_INVOCACION:
-            self._visitar_parametros_invocacion(nodo)
+            return self._visitar_parametros_invocacion(nodo)
         
         elif nodo.tipo is TipoNodo.PRINCIPAL:
-            self.__visitar_michelin(nodo)
+            return self.__visitar_michelin(nodo)
         
         elif nodo.tipo is TipoNodo.PRINT:
-            self.__visitar_print(nodo)
+            return self.__visitar_print(nodo)
         
         elif nodo.tipo is TipoNodo.REPETICION:
-            self.__visitar_repeticion(nodo)
-
+            return self.__visitar_repeticion(nodo)
+        
         elif nodo.tipo is TipoNodo.RETORNO:
-            self.__visitar_retorno(nodo)
+            return self.__visitar_retorno(nodo)
         
         elif nodo.tipo is TipoNodo.TEXTO:
-            self.__visitar_texto(nodo)
+            return self.__visitar_texto(nodo)
         
         elif nodo.tipo is TipoNodo.AUXILIAR:
-            self.__visitar_auxiliar(nodo)
-
+            return self.__visitar_auxiliar(nodo)
+        
         elif nodo.tipo is TipoNodo.VALOR_VERDAD:
-            self.__visitar_valor_verdadero(nodo)
+            return self.__visitar_valor_verdadero(nodo)
         
         else:
-            raise Exception('Nunca va a usarse este else, pero es por si acaso')
+            raise Exception('Tipo de nodo no soportado')
 
-        return resultado
-        
     def __visitar_programa(self, nodo_actual):
-        pass
+        return '\n'.join(self.visitar(hijo) for hijo in nodo_actual.hijos)
+
     def __visitar_asignacion(self, nodo_actual):
-        pass
+        izq = self.visitar(nodo_actual.hijos[0])
+        der = self.visitar(nodo_actual.hijos[1])
+        return f"{izq} = {der}"
 
     def __visitar_bifurcacion(self, nodo_actual):
-        pass
+        # Soporta IF, ELSE, ELIF y BIFURCACION
+        if nodo_actual.tipo is TipoNodo.IF or nodo_actual.tipo is TipoNodo.BIFURCACION:
+            condicion = self.visitar(nodo_actual.hijos[0])
+            cuerpo = self.visitar(nodo_actual.hijos[1])
+            return f"if {condicion}:\n{self.__tabular(cuerpo)}"
+        
+        elif nodo_actual.tipo is TipoNodo.ELIF:
+            condicion = self.visitar(nodo_actual.hijos[0])
+            cuerpo = self.visitar(nodo_actual.hijos[1])
+            return f"elif {condicion}:\n{self.__tabular(cuerpo)}"
+        
+        elif nodo_actual.tipo is TipoNodo.ELSE:
+            cuerpo = self.visitar(nodo_actual.hijos[0])
+            return f"else:\n{self.__tabular(cuerpo)}"
+        
+        else:
+            return ''
 
     def __visitar_bloque_instrucciones(self, nodo_actual):
-        pass
+        self.tabuladores += 4
+        instrucciones = [self.__tabular(self.visitar(hijo)) for hijo in nodo_actual.hijos]
+        self.tabuladores -= 4
+        
+        return '\n'.join(instrucciones)
 
     def __visitar_comparacion(self, nodo_actual):
-        pass
+        izq = self.visitar(nodo_actual.hijos[0])
+        comp = self.visitar(nodo_actual.hijos[1])
+        der = self.visitar(nodo_actual.hijos[2])
+        
+        return f"{izq} {comp} {der}"
 
     def __visitar_comparador(self, nodo_actual):
-        pass
+        comparadores = {
+            'mismo_sabor_que': '==',
+            'mas_sazonado_que': '>',
+            'menos_cocido_que': '<',
+            'tan_horneado_como': '>=',
+            'tan_dulce_como': '<=',
+        }
+        
+        return comparadores.get(nodo_actual.valor, nodo_actual.valor)
 
     def __visitar_condicion(self, nodo_actual):
-        pass
+        
+        return ' '.join(self.visitar(hijo) for hijo in nodo_actual.hijos)
 
     def __visitar_funcion(self, nodo_actual):
-        pass
+        nombre = nodo_actual.valor
+        parametros = self.visitar(nodo_actual.hijos[0]) if nodo_actual.hijos else ''
+        cuerpo = self.visitar(nodo_actual.hijos[1]) if len(nodo_actual.hijos) > 1 else ''
+        
+        return f"\ndef {nombre}({parametros}):\n{cuerpo}"
 
     def __visitar_entero(self, nodo_actual):
-        pass
+        
+        return str(nodo_actual.valor)
 
     def __visitar_error(self, nodo_actual):
-        pass
+        valor = self.visitar(nodo_actual.hijos[0]) if nodo_actual.hijos else ''
+        
+        return f"print({valor}, file=sys.stderr)"
 
     def __visitar_expresion_matematica(self, nodo_actual):
-        pass
+        
+        return ' '.join(self.visitar(hijo) for hijo in nodo_actual.hijos)
 
     def __visitar_matematica(self, nodo_actual):
-        pass
+        
+        return ' '.join(self.visitar(hijo) for hijo in nodo_actual.hijos)
 
     def __visitar_flotante(self, nodo_actual):
-        pass
+        
+        return str(nodo_actual.valor)
 
     def __visitar_identificador(self, nodo_actual):
-        pass
+        
+        return str(nodo_actual.valor)
 
     def __visitar_instruccion(self, nodo_actual):
-        pass
+        
+        return self.visitar(nodo_actual.hijos[0]) if nodo_actual.hijos else ''
 
     def __visitar_invocacion(self, nodo_actual):
-        pass
+        nombre = self.visitar(nodo_actual.hijos[0])
+        parametros = self.visitar(nodo_actual.hijos[1]) if len(nodo_actual.hijos) > 1 else ''
+        
+        return f"{nombre}({parametros})"
 
     def __visitar_operador(self, nodo_actual):
-        pass
+        operadores = {
+            'echele': '+',
+            'quitele': '-',
+            'chuncherequee': '*',
+            'desmadeje': '/',
+        }
+        
+        return operadores.get(nodo_actual.valor, nodo_actual.valor)
 
     def __visitar_palabra_clave(self, nodo_actual):
-        pass
+        
+        return str(nodo_actual.valor)
 
     def _visitar_parametros(self, nodo_actual):
-        pass
+        
+        return ', '.join(self.visitar(hijo) for hijo in nodo_actual.hijos)
 
     def _visitar_parametros_funcion(self, nodo_actual):
-        pass
+        
+        return ', '.join(self.visitar(hijo) for hijo in nodo_actual.hijos)
 
     def _visitar_parametros_invocacion(self, nodo_actual):
-        pass
+        
+        return ', '.join(self.visitar(hijo) for hijo in nodo_actual.hijos)
 
     def __visitar_michelin(self, nodo_actual):
-        pass
+        cuerpo = self.visitar(nodo_actual.hijos[0]) if nodo_actual.hijos else ''
+        
+        return f"\ndef principal():\n{cuerpo}\n\nif __name__ == '__main__':\n    principal()"
 
     def __visitar_print(self, nodo_actual):
-        pass
+        valor = self.visitar(nodo_actual.hijos[0]) if nodo_actual.hijos else ''
+        
+        return f"print({valor})"
 
     def __visitar_repeticion(self, nodo_actual):
-        pass
+        condicion = self.visitar(nodo_actual.hijos[0])
+        cuerpo = self.visitar(nodo_actual.hijos[1]) if len(nodo_actual.hijos) > 1 else ''
+        
+        return f"while {condicion}:\n{self.__tabular(cuerpo)}"
 
     def __visitar_retorno(self, nodo_actual):
-        pass
+        valor = self.visitar(nodo_actual.hijos[0]) if nodo_actual.hijos else ''
+        
+        return f"return {valor}"
 
     def __visitar_texto(self, nodo_actual):
-        pass
+        
+        return f'"{nodo_actual.valor}"'
 
     def __visitar_auxiliar(self, nodo_actual):
-        pass
+        
+        return self.visitar(nodo_actual.hijos[0]) if nodo_actual.hijos else ''
 
     def __visitar_valor_verdadero(self, nodo_actual):
-        pass
-    
-    
+        
+        return str(nodo_actual.valor)
+
+    def __tabular(self, texto):
+        tab = " " * self.tabuladores
+        
+        return '\n'.join(tab + linea if linea.strip() else '' for linea in texto.split('\n'))
