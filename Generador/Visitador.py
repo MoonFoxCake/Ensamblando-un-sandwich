@@ -71,37 +71,45 @@ class VisitadorPython:
             return ''
 
     def __visitar_programa(self, nodo_actual):
-        return '\n'.join(self.visitar(hijo) for hijo in nodo_actual.hijos)
+        return '\n'.join(self.visitar(hijo) for hijo in nodo_actual.hijos if self.visitar(hijo).strip())
 
     def __visitar_asignacion(self, nodo_actual):
-        # hijos[0]: PALABRA_CLAVE ('incorporar'), hijos[1]: IDENTIFICADOR, hijos[2]: valor
         identificador = self.visitar(nodo_actual.hijos[1])
         valor = self.visitar(nodo_actual.hijos[2])
         return f"{identificador} = {valor}"
 
     def __visitar_bifurcacion(self, nodo_actual):
-        if nodo_actual.tipo is TipoNodo.IF or nodo_actual.tipo is TipoNodo.BIFURCACION:
+        # Detecta si es nodo BIFURCACION (con hijos IF, ELIF, ELSE)
+        if nodo_actual.tipo == TipoNodo.BIFURCACION:
+            resultado = []
+            for hijo in nodo_actual.hijos:
+                resultado.append(self.visitar(hijo))
+            return '\n'.join(resultado)
+        elif nodo_actual.tipo == TipoNodo.IF:
             condicion = self.visitar(nodo_actual.hijos[0])
             cuerpo = self.visitar(nodo_actual.hijos[1])
             return f"if {condicion}:\n{self.__tabular(cuerpo)}"
-        elif nodo_actual.tipo is TipoNodo.ELIF:
+        elif nodo_actual.tipo == TipoNodo.ELIF:
             condicion = self.visitar(nodo_actual.hijos[0])
             cuerpo = self.visitar(nodo_actual.hijos[1])
             return f"elif {condicion}:\n{self.__tabular(cuerpo)}"
-        elif nodo_actual.tipo is TipoNodo.ELSE:
+        elif nodo_actual.tipo == TipoNodo.ELSE:
             cuerpo = self.visitar(nodo_actual.hijos[0])
             return f"else:\n{self.__tabular(cuerpo)}"
         else:
             return ''
-
+        
     def __visitar_bloque_instrucciones(self, nodo_actual):
         self.tabuladores += 4
-        instrucciones = [self.__tabular(self.visitar(hijo)) for hijo in nodo_actual.hijos]
+        instrucciones = []
+        for hijo in nodo_actual.hijos:
+            linea = self.visitar(hijo)
+            if linea and linea.strip():
+                instrucciones.append(self.__tabular(linea))
         self.tabuladores -= 4
         return '\n'.join(instrucciones)
 
     def __visitar_condicion(self, nodo_actual):
-        # hijos[0]: VARIABLE_MATEMATICA, hijos[1]: COMPARADOR, hijos[2]: VARIABLE_MATEMATICA
         if len(nodo_actual.hijos) == 3:
             izq = self.visitar(nodo_actual.hijos[0])
             comp = self.visitar(nodo_actual.hijos[1])
@@ -126,7 +134,6 @@ class VisitadorPython:
         return comparadores.get(str(nodo_actual.valor), str(nodo_actual.valor))
 
     def __visitar_funcion(self, nodo_actual):
-        # hijos[0]: PALABRA_CLAVE ('michelin'), hijos[1]: IDENTIFICADOR, hijos[2]: PARA_FUNCION, hijos[3]: BLOQUE_INSTRUCCIONES
         nombre = self.visitar(nodo_actual.hijos[1]) if len(nodo_actual.hijos) > 1 else "funcion_sin_nombre"
         parametros = self.visitar(nodo_actual.hijos[2]) if len(nodo_actual.hijos) > 2 else ""
         cuerpo = self.visitar(nodo_actual.hijos[3]) if len(nodo_actual.hijos) > 3 else "    pass"
@@ -140,7 +147,6 @@ class VisitadorPython:
         return f"raise Exception({valor})"
 
     def __visitar_expresion_matematica(self, nodo_actual):
-        # hijos[0]: PALABRA_CLAVE ('ajustar'), hijos[1]: IDENTIFICADOR, hijos[2]: VARIABLE_MATEMATICA, hijos[3]: OPERADOR, hijos[4]: VARIABLE_MATEMATICA
         if len(nodo_actual.hijos) == 5:
             identificador = self.visitar(nodo_actual.hijos[1])
             izq = self.visitar(nodo_actual.hijos[2])
@@ -151,7 +157,6 @@ class VisitadorPython:
             return ' '.join(self.visitar(hijo) for hijo in nodo_actual.hijos)
 
     def __visitar_matematica(self, nodo_actual):
-        # Generalmente solo tiene un hijo (IDENTIFICADOR, ENTERO, FLOTANTE, etc.)
         return ' '.join(self.visitar(hijo) for hijo in nodo_actual.hijos)
 
     def __visitar_flotante(self, nodo_actual):
@@ -161,12 +166,31 @@ class VisitadorPython:
         return str(nodo_actual.valor)
 
     def __visitar_instruccion(self, nodo_actual):
-        return self.visitar(nodo_actual.hijos[0]) if nodo_actual.hijos else ''
+        if not nodo_actual.hijos:
+            return ''
+        hijo = nodo_actual.hijos[0]
+        # Ignora nodos de tipo PALABRA_CLAVE o AUXILIAR que no generan código
+        if hasattr(hijo, 'tipo') and hijo.tipo in (TipoNodo.PALABRA_CLAVE, TipoNodo.AUXILIAR):
+            return ''
+        # Si el hijo es una bifurcación, bloque, repetición o función anidada, solo visita
+        if hasattr(hijo, 'tipo') and hijo.tipo in (
+            TipoNodo.BIFURCACION, TipoNodo.IF, TipoNodo.ELIF, TipoNodo.ELSE,
+            TipoNodo.REPETICION, TipoNodo.BLOQUE_INSTRUCCIONES, TipoNodo.DEF_FUNCION
+        ):
+            return self.visitar(hijo)
+        resultado = self.visitar(hijo)
+        return resultado
 
     def __visitar_invocacion(self, nodo_actual):
         nombre = self.visitar(nodo_actual.hijos[0])
         parametros = self.visitar(nodo_actual.hijos[1]) if len(nodo_actual.hijos) > 1 else ''
-        return f"{nombre}({parametros})"
+        # Solo genera llamada si hay PARA_INVOCACION, si no, es variable
+        if hasattr(nodo_actual.hijos[0], 'tipo') and nodo_actual.hijos[0].tipo == TipoNodo.IDENTIFICADOR and parametros:
+            return f"{nombre}({parametros})"
+        elif parametros:
+            return f"{nombre}({parametros})"
+        else:
+            return nombre
 
     def __visitar_operador(self, nodo_actual):
         operadores = {
@@ -186,8 +210,8 @@ class VisitadorPython:
             'ajustar': '',
             'servir': 'print',
             'quemo': 'raise Exception',
-            'pelar': 'pelar',
-            'marinar': 'marinar',
+            'pelar': '',
+            'marinar': '',
             'True': 'True',
             'False': 'False',
             'batir': '+',
@@ -226,7 +250,6 @@ class VisitadorPython:
         return f"while {condicion}:\n{self.__tabular(cuerpo)}"
 
     def __visitar_retorno(self, nodo_actual):
-        # hijos[0]: PALABRA_CLAVE ('dingding'), hijos[1]: valor de retorno (opcional)
         if len(nodo_actual.hijos) > 1:
             valor = self.visitar(nodo_actual.hijos[1])
         elif len(nodo_actual.hijos) == 1:
@@ -244,7 +267,8 @@ class VisitadorPython:
         return f'"{valor}"'
 
     def __visitar_auxiliar(self, nodo_actual):
-        return self.visitar(nodo_actual.hijos[0]) if nodo_actual.hijos else ''
+        # No genera código, ignora auxiliares como pelar/marinar
+        return ''
 
     def __visitar_valor_verdadero(self, nodo_actual):
         return str(nodo_actual.valor)
