@@ -2,7 +2,8 @@ import os
 from Analizador.AnalizadorLimpio import Analizador
 from Explorador.Explorador import Explorador
 from Verificador.Verificador import Verificador
-from Generador.Visitador import VisitadorPython   
+#from Generador.Visitador import VisitadorPython   
+from Generador.generador import Generador
 
 
 def imprimir_arbol(nodo, nivel=0, indice=None):
@@ -62,12 +63,15 @@ for archivo_nombre in archivos_ejemplos:
     #imprimir_arbol(analizador.asa.raiz)
 
 
-    visitador = VisitadorPython()
-    codigo_python = visitador.visitar(analizador.asa.raiz)  # O el nodo raíz de tu AST
+    #visitador = VisitadorPython()
+    #codigo_python = visitador.visitar(analizador.asa.raiz)  # O el nodo raíz de tu AST
+    #print("\nCódigo Python generado:\n")
+    #print(codigo_python)
+    
+    generador = Generador(analizador.asa)
+    codigo_python = generador.generar_codigo()  # Esto ya incluye el ambiente estándar
     print("\nCódigo Python generado:\n")
     print(codigo_python)
-
-
 
 
 
