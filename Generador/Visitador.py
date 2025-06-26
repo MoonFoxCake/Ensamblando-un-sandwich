@@ -210,8 +210,6 @@ class VisitadorPython:
             'ajustar': '',
             'servir': 'print',
             'quemo': 'raise Exception',
-            'pelar': '',
-            'marinar': '',
             'True': 'True',
             'False': 'False',
             'batir': '+',
@@ -265,10 +263,6 @@ class VisitadorPython:
         if valor.startswith('"') and valor.endswith('"'):
             valor = valor[1:-1]
         return f'"{valor}"'
-
-    def __visitar_auxiliar(self, nodo_actual):
-        # No genera código, ignora auxiliares como pelar/marinar
-        return ''
 
     def __visitar_valor_verdadero(self, nodo_actual):
         return str(nodo_actual.valor)
