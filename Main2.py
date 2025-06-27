@@ -1,3 +1,4 @@
+import os
 from Analizador.AnalizadorLimpio import Analizador
 from Explorador.Explorador import Explorador
 from Verificador.Verificador import Verificador
@@ -61,3 +62,9 @@ codigo_python = generador.generar_codigo()
 print("\n=== CÓDIGO PYTHON GENERADO ===\n")
 print(codigo_python)
 print("========== FIN GENERADOR ==========")
+# Guardar el código generado en un archivo .py
+# DESCOMENTAR LO DE ABAJO SI SE DESEA GUARDAR LOS ARCHIVOS COMO .PY
+#nombre_salida = os.path.splitext(archivo_ejemplo)[0] + ".py"
+#with open(nombre_salida, 'w', encoding='utf-8') as archivo_py:
+#    archivo_py.write(codigo_python)
+#print(f"\nEl código Python se guardó en: {nombre_salida}")

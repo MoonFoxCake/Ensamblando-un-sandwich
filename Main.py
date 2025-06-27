@@ -72,8 +72,8 @@ for archivo_nombre in archivos_ejemplos:
     codigo_python = generador.generar_codigo()  # Esto ya incluye el ambiente estándar
     print("\nCódigo Python generado:\n")
     print(codigo_python)
-    
-    #Guardar el código generado en un archivo .py ===
+    #Guardar el código generado en un archivo .py  
+    # DESCOMENTAR LO DE ABAJO SI SE DESEA GUARDAR LOS ARCHIVOS COMO .PY
     #nombre_salida = os.path.splitext(archivo_nombre)[0] + ".py"
     #ruta_salida = os.path.join(directorio_ejemplos, nombre_salida)
     #with open(ruta_salida, 'w', encoding='utf-8') as archivo_py:
