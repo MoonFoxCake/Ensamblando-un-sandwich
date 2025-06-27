@@ -1,0 +1,77 @@
+michelin carrera_caracoles(comida, temperatura, humedad) {
+    incorporar meta = 10
+    incorporar A = 0
+    incorporar B = 0
+    incorporar t = 0
+    
+    servir "CARRERA DE CARACOLES"
+    servir "Condiciones ambientales recibidas"
+    
+    integrar (A menos_cocido_que meta) {
+        if (B menos_cocido_que meta) {
+            
+            incorporar temp_t = 1
+            ajustar t = t batir temp_t
+            
+            incorporar mueveA = 1
+            
+            if (temperatura mas_sazonado_que 30) {
+                incorporar temp_val = 0
+                ajustar mueveA = temp_val batir 0
+            }
+            
+            if (comida menos_cocido_que 5) {
+                incorporar temp_val2 = 0
+                ajustar mueveA = temp_val2 batir 0
+            }
+            
+            if (mueveA mas_sazonado_que 0) {
+                ajustar A = A batir mueveA
+                servir "A avanza"
+            }
+
+            incorporar mueveB = 1
+            
+            if (humedad menos_cocido_que 20) {
+                incorporar temp_val4 = 0
+                ajustar mueveB = temp_val4 batir 0
+            }
+            
+            if (temperatura mas_sazonado_que 20) {
+                if (temperatura menos_cocido_que 25) {
+                    incorporar temp_val5 = 2
+                    ajustar mueveB = temp_val5 batir 0
+                }
+            }
+            
+            if (mueveB mas_sazonado_que 0) {
+                ajustar B = B batir mueveB
+                servir "B avanza"
+            }
+            
+            servir "Turno completado"
+        }
+    }
+
+    servir "CARRERA TERMINADA"
+
+    incorporar gana = 0
+
+    if (A mas_sazonado_que B) {
+        incorporar temp_val7 = 1
+        ajustar gana = temp_val7 batir 0
+        servir "Gana A"
+    }
+    elif (B mas_sazonado_que A) {
+        incorporar temp_val8 = 2
+        ajustar gana = temp_val8 batir 0
+        servir "Gana B"
+    }
+    else {
+        servir "Empate"
+    }
+
+    servir "Fin"
+}
+
+-E Función de carrera de caracoles con parámetros ambientales -o

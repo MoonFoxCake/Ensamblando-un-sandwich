@@ -21,7 +21,7 @@ def imprimir_arbol(nodo, nivel=0, indice=None):
     for i, hijo in enumerate(getattr(nodo, 'hijos', [])):
         imprimir_arbol(hijo, nivel + 1, i)
 
-archivo_ejemplo = 'miniprogra.sdw'
+archivo_ejemplo = 'progra.sdw'
 
 with open(archivo_ejemplo, 'r', encoding='utf-8') as archivo:
     contenido = archivo.readlines()
@@ -43,7 +43,7 @@ print("\n========== INICIO ANALIZADOR ==========")
 analizador = Analizador(componentes)
 analizador.analizar()
 print("\n=== ÁRBOL DE SINTAXIS ABSTRACTA (ASA) ===")
-imprimir_arbol(analizador.asa.raiz)
+analizador.asa.imprimir()
 print("========== FIN ANALIZADOR ==========\n")
 
 # 3. Verificador
@@ -64,7 +64,7 @@ print(codigo_python)
 print("========== FIN GENERADOR ==========")
 # Guardar el código generado en un archivo .py
 # DESCOMENTAR LO DE ABAJO SI SE DESEA GUARDAR LOS ARCHIVOS COMO .PY
-#nombre_salida = os.path.splitext(archivo_ejemplo)[0] + ".py"
-#with open(nombre_salida, 'w', encoding='utf-8') as archivo_py:
-#    archivo_py.write(codigo_python)
-#print(f"\nEl código Python se guardó en: {nombre_salida}")
+nombre_salida = os.path.splitext(archivo_ejemplo)[0] + ".py"
+with open(nombre_salida, 'w', encoding='utf-8') as archivo_py:
+    archivo_py.write(codigo_python)
+print(f"\nEl código Python se guardó en: {nombre_salida}")

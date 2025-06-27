@@ -50,18 +50,12 @@ for archivo_nombre in archivos_ejemplos:
     
     # Crear el analizador
     analizador = Analizador(componentes)
-
     analizador.analizar()
-    #analizador.asa.imprimir()  # Imprimir el árbol de sintaxis abstracta en preorden   
+    analizador.asa.imprimir()  # Imprimir el árbol de sintaxis abstracta en preorden   
 
     ##Pruebas de generación de código
-    verificador = Verificador(analizador.asa)
-    verificador.verificar()
-    #verificador.print_arbol()
-
-    #print("\nÁrbol de Sintaxis Abstracta:")
-    #imprimir_arbol(analizador.asa.raiz)
-
+    #verificador = Verificador(analizador.asa)
+    #verificador.verificar()
 
     #visitador = VisitadorPython()
     #codigo_python = visitador.visitar(analizador.asa.raiz)  # O el nodo raíz de tu AST
