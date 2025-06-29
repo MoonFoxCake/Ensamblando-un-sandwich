@@ -14,6 +14,14 @@ Sabemos que aprender a programar puede ser una experiencia frustrante para mucho
 📦 proyecto/<br>
 ├── 📂 explorador/<br>
 │ └── 🐍 explorador.py, el explorador del programa<br>
+├── 📂 Analizador/<br>
+│ └── 🐍 Analizador.py, el analizador de lo que extrae el explorador<br>
+├── 📂 Verificador/<br>
+│ └── 🐍 Verificador.py, el que decora el arbol y verifica todo<br>
+├── 📂 Generador/<br>
+│ └── 🐍 Generador.py, el paso final y quien nos ayuda a generar codigo en Python<br>
+├── 🐍 Main.py/<br>
+├── 🐍 Main2.py/<br>
 ├── 📂 ejemplos de Codigo/<br>
 │ └── 📜 Aca se van a insertar ejemplos de codigo, con mas para que se pueda probar y entender<br>
 └── 📂 documentacion y sintaxis/<br>
