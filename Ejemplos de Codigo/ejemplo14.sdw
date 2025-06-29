@@ -2,10 +2,7 @@ michelin recetatarta (harina, azucar) {
     incorporar horneados = 0
     integrar (horneados menos_cocido_que 10) {
         ajustar harina = harina colar 2
-        pelar azucar
-        marinar azucar
         incorporar pasteles = 0
-        pasteles = "sirve"
         -E Esto controla el ciclo -o
         ajustar horneados = horneados batir 1
 
