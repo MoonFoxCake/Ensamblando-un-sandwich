@@ -17,12 +17,12 @@ michelin carrera_caracoles(comida, temperatura, humedad) {
             
             if (temperatura mas_sazonado_que 30) {
                 incorporar temp_val = 0
-                ajustar mueveA = temp_val batir 0
+                ajustar mueveA = temp_val batir 1
             }
             
             if (comida menos_cocido_que 5) {
                 incorporar temp_val2 = 0
-                ajustar mueveA = temp_val2 batir 0
+                ajustar mueveA = temp_val2 batir 1
             }
             
             if (mueveA mas_sazonado_que 0) {
@@ -34,13 +34,13 @@ michelin carrera_caracoles(comida, temperatura, humedad) {
             
             if (humedad menos_cocido_que 20) {
                 incorporar temp_val4 = 0
-                ajustar mueveB = temp_val4 batir 0
+                ajustar mueveB = temp_val4 batir 1
             }
             
             if (temperatura mas_sazonado_que 20) {
                 if (temperatura menos_cocido_que 25) {
                     incorporar temp_val5 = 2
-                    ajustar mueveB = temp_val5 batir 0
+                    ajustar mueveB = temp_val5 batir 1
                 }
             }
             
@@ -74,4 +74,5 @@ michelin carrera_caracoles(comida, temperatura, humedad) {
     servir "Fin"
 }
 
+carrera_caracoles(16,7,1)
 -E Función de carrera de caracoles con parámetros ambientales -o

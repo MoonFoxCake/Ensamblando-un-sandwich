@@ -13,21 +13,21 @@ def carrera_caracoles(comida, temperatura, humedad):
          mueveA = 1
          if temperatura > 30:
                 temp_val = 0
-                mueveA = temp_val + 0
+                mueveA = temp_val + 1
          if comida < 5:
                 temp_val2 = 0
-                mueveA = temp_val2 + 0
+                mueveA = temp_val2 + 1
          if mueveA > 0:
                 A = A + mueveA
                 print("A avanza")
          mueveB = 1
          if humedad < 20:
                 temp_val4 = 0
-                mueveB = temp_val4 + 0
+                mueveB = temp_val4 + 1
          if temperatura > 20:
                 if temperatura < 25:
                          temp_val5 = 2
-                         mueveB = temp_val5 + 0
+                         mueveB = temp_val5 + 1
          if mueveB > 0:
                 B = B + mueveB
                 print("B avanza")
