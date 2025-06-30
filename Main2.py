@@ -21,7 +21,9 @@ def imprimir_arbol(nodo, nivel=0, indice=None):
     for i, hijo in enumerate(getattr(nodo, 'hijos', [])):
         imprimir_arbol(hijo, nivel + 1, i)
 
-archivo_ejemplo = 'progra.sdw'
+#archivo_ejemplo = 'progra.sdw'
+archivo_ejemplo = './Ejemplos de Codigo/ejemplo16.sdw'
+
 
 with open(archivo_ejemplo, 'r', encoding='utf-8') as archivo:
     contenido = archivo.readlines()
