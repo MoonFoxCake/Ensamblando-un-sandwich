@@ -73,5 +73,5 @@ michelin carrera_caracoles(comida, temperatura, humedad) {
 
     servir "Fin"
 }
-
+carrera_caracoles(10, 25, 25)
 -E Función de carrera de caracoles con parámetros ambientales -o
