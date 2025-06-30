@@ -45,4 +45,4 @@ def carrera_caracoles(comida, temperatura, humedad):
  else:
     print("Empate")
  print("Fin")
-carrera_caracoles(16, 7, 1)
+carrera_caracoles(10, 25, 25)
