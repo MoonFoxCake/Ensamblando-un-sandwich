@@ -100,13 +100,13 @@ class VisitadorPython:
             return ''
         
     def __visitar_bloque_instrucciones(self, nodo_actual):
-        self.tabuladores += 4
+        self.tabuladores += 1
         instrucciones = []
         for hijo in nodo_actual.hijos:
             linea = self.visitar(hijo)
             if linea and linea.strip():
                 instrucciones.append(self.__tabular(linea))
-        self.tabuladores -= 4
+        self.tabuladores -= 1
         return '\n'.join(instrucciones)
 
     def __visitar_condicion(self, nodo_actual):
